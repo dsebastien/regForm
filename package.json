@@ -1,0 +1,70 @@
+{
+  "name": "regform",
+  "description": "Registration form",
+  "author": {
+    "email": "seb@dsebastien.net",
+    "name": "dsebastien",
+    "url": "https://twitter.com/dsebastien"
+  },
+  "contributors": [],
+  "homepage": "https://www.dsebastien.net",
+  "keywords": [
+    "web"
+  ],
+  "private": true,
+  "version": "0.0.1",
+  "jspm": {
+    "configFile": "jspm.conf.js",
+    "dependencies": {
+      "@reactivex/rxjs": "npm:@reactivex/rxjs@5.0.0-alpha.7",
+      "angular2": "npm:angular2@2.0.0-alpha.46",
+      "babel-runtime": "npm:babel-runtime@^6.1.18",
+      "font-awesome": "npm:font-awesome@^4.4.0",
+      "material-design-lite": "github:google/material-design-lite@^1.0.6",
+      "normalize.css": "github:necolas/normalize.css@3.0.3",
+      "reflect-metadata": "npm:reflect-metadata@0.1.2",
+      "zone.js": "npm:zone.js@^0.5.8"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^6.1.21",
+      "core-js": "npm:core-js@^1.2.1"
+    }
+  },
+  "dependencies": {
+    "@reactivex/rxjs": "5.0.0-alpha.7",
+    "angular2": "2.0.0-alpha.46",
+    "babel-runtime": "6.1.x",
+    "jquery": "2.1.4",
+    "reflect-metadata": "0.1.2",
+    "zone.js": "0.5.8"
+  },
+  "devDependencies": {
+    "babel-core": "6.1.x",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.1.x",
+    "babel-preset-es2015": "6.1.x",
+    "gulp": "3.9.x",
+    "jspm": "0.16.x",
+    "modern-web-dev-build": "0.1.0",
+    "nodemon": "1.8.x",
+    "semantic-release": "4.3.x",
+    "tsd": "0.6.5"
+  },
+  "engines": {
+    "node": ">=4.2.1",
+    "npm": ">=2.0.0"
+  },
+  "scripts": {
+    "build": "gulp",
+    "clean": "gulp clean",
+    "help": "gulp help",
+    "outdated": "npm outdated",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "serve": "nodemon --watch gulpfile.js --watch gulpfile.babel.js --watch package.json --watch .jshintrc --watch .jscsrc --watch tsconfig.json --watch tslint.json --watch jspm.conf.js --exec gulp serve",
+    "serve-dist": "nodemon --watch gulpfile.js --watch gulpfile.babel.js --watch package.json --watch .jshintrc --watch .jscsrc --watch tsconfig.json --watch tslint.json --watch jspm.conf.js --exec gulp serve-dist",
+    "setup": "npm install --no-optional && jspm install && jspm dl-loader && npm run tsd",
+    "start": "npm run serve",
+    "tsd": "tsd reinstall --save --overwrite",
+    "tsd-update": "tsd update --save --overwrite",
+    "update": "npm install --no-optional && jspm update && jspm dl-loader && npm run tsd"
+  }
+}
