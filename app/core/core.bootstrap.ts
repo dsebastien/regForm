@@ -6,7 +6,7 @@
 import "reflect-metadata";
 
 // import Angular 2
-import {Component, CORE_DIRECTIVES, provide, bootstrap} from "angular2/angular2";
+import {Component, provide, bootstrap} from "angular2/angular2";
 import {Http, HTTP_PROVIDERS} from "angular2/http";
 
 // import Angular 2 Component Router
@@ -23,7 +23,7 @@ import {Home} from "../pages/home/home";
 @Component({
 	selector: "app",
 	templateUrl: "core/core.bootstrap.template.html", //template: "<router-outlet></router-outlet>",
-	directives: [CORE_DIRECTIVES, RouterOutlet, RouterLink]
+	directives: [RouterOutlet, RouterLink]
 })
 @RouteConfig([
 	//TODO put back the old syntax (comment below) once the typings are correct
