@@ -22,6 +22,8 @@ There are more options to try out though:
 * another solution that could do this globally with the least effort
 * ...
 
+I've taken some inspiration from: https://github.com/jadjoubran/angular-material-design-lite
+
 
 ## How to build
 First, make sure that you have installed the required global npm packages: `npm install gulp --global --no-optional`.
