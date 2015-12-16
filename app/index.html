@@ -26,7 +26,7 @@
 	<!-- You can customize the default -->
 	<meta name="theme-color" content="#656970">
 	<link rel="canonical" href="https://www.dsebastien.net">
-	
+
 	<!-- Stylesheets -->
 	<!-- build:css-vendor -->
 	<link rel="stylesheet" href="styles/vendor.css">
@@ -35,23 +35,61 @@
 	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
 
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	
 	<base href="/">
 </head>
 <body>
-	<app>
-		Loading ...
-	</app>
+
+<div class="regform-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+	<header class="regform-header mdl-layout__header mdl-layout__header--scroll mdl-color--grey-100 mdl-color-text--grey-800">
+		<br/>
+
+		<div class="mdl-layout__header-row">
+			<a href="https://www.laligue.be/association/"><img class="regform-logo" src="images/ligue.png"></a>
+			&nbsp;&nbsp;<h1>Brocante de Jurbise</h1>
+			<div class="mdl-layout-spacer"></div>
+			<i class="fa fa-facebook-square fa-5x"></i>
+			&nbsp;&nbsp;
+			<i class="fa fa-twitter-square fa-5x"></i>
+		</div>
+		<br/>
+	</header>
+	<div class="regform-ribbon"></div>
+	<main class="regform-main mdl-layout__content">
+		<div class="regform-container mdl-grid">
+			<div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+			<div class="regform-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+				<app>
+					<div class="mdl-spinner mdl-js-spinner is-active"></div>
+				</app>
+			</div>
+		</div>
+		<footer class="regform-footer mdl-mini-footer">
+			<div class="mdl-mini-footer--left-section">
+				<ul class="mdl-mini-footer--link-list">
+					<li><a href="https://www.dsebastien.net">© dSebastien</a></li>
+					<li><a href="https://www.twitter.com/dSebastien"><i class="fa fa-twitter-square fa-lg"></i></a></li>
+					<li><a href="https://plus.google.com/+SébastienDuboisBE"><i class="fa fa-google-plus-square fa-lg"></i></a></li>
+				</ul>
+			</div>
+		</footer>
+	</main>
+</div>
 	
-	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
-	
-	<!-- build:js-app -->
-	<!-- for production, this is all replaced by a minified bundle -->
-	<script src="jspm_packages/system.src.js"></script>
-	<script src="jspm.conf.js"></script>
-	<script>
-		"use strict";
-		System.import("core/core.bootstrap").catch(console.error.bind(console));
-	</script>
-	<!-- endbuild -->
+
+<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+
+<!-- build:js-app -->
+<!-- for production, this is all replaced by a minified bundle -->
+<script src="jspm_packages/system.src.js"></script>
+<script src="jspm.conf.js"></script>
+<script>
+	"use strict";
+	System.import("core/core.bootstrap").catch(console.error.bind(console));
+</script>
+<!-- endbuild -->
 </body>
 </html>
