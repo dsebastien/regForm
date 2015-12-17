@@ -1,4 +1,4 @@
-import { Directive, ElementRef } from "angular2/angular2";
+import {Directive, ElementRef} from "angular2/core";
 
 declare var componentHandler:any; // this is necessary to let TypeScript know that the variable exists already
 

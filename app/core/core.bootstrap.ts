@@ -4,9 +4,11 @@
 
 // import Angular2 deps
 import "reflect-metadata";
+//import {Observable} from "rxjs/Observable";
 
 // import Angular 2
-import {Component, provide, bootstrap} from "angular2/angular2";
+import {bootstrap} from "angular2/platform/browser";
+import {Component, provide} from "angular2/core";
 import {Http, HTTP_PROVIDERS} from "angular2/http";
 
 // import Angular 2 Component Router
@@ -55,7 +57,7 @@ bootstrap(App, [
 	//bind(LocationStrategy).toClass(HTML5LocationStrategy) // enable HTML5 history API location strategy
 
 ]).then(
-	success => {
+	(success:any) => {
 		console.log("Bootstrap successful");
 		// workaround to ensure that DOM nodes corresponding to Material Design Lite components added through Angular are registered correctly (i.e., make the JS part of Material Design Lite work with Angular)
 		// reference: http://stackoverflow.com/questions/31278781/material-design-lite-integration-with-angularjs
@@ -77,5 +79,5 @@ bootstrap(App, [
 		});
 		*/
 	},
-	error => console.error(error)
+	(error:any) => console.error(error)
 );
