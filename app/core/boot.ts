@@ -7,7 +7,7 @@ import {App} from "./app";
 
 // import Angular 2
 import {bootstrap} from "angular2/platform/browser";
-import {Component, provide} from "angular2/core";
+import {provide} from "angular2/core";
 import {HTTP_PROVIDERS} from "angular2/http";
 
 // import Angular 2 Component Router
@@ -16,6 +16,9 @@ import {LocationStrategy, PathLocationStrategy, ROUTER_PROVIDERS} from "angular2
 
 // app services
 //import {appServicesInjectables} from "core/services/services";
+
+// enable production mode of Angular
+//enableProdMode();
 
 // bootstrap our app
 console.log("Bootstrapping the App");
