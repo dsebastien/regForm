@@ -1,48 +1,21 @@
 "use strict";
 
-// import Material design lite
+// import the application
+import {App} from "./app";
 
-// import Angular2 deps
-import "reflect-metadata";
 //import {Observable} from "rxjs/Observable";
 
 // import Angular 2
 import {bootstrap} from "angular2/platform/browser";
 import {Component, provide} from "angular2/core";
-import {Http, HTTP_PROVIDERS} from "angular2/http";
+import {HTTP_PROVIDERS} from "angular2/http";
 
 // import Angular 2 Component Router
 // reference: http://blog.thoughtram.io/angular/2015/06/16/routing-in-angular-2.html
-import {RouteConfig, Route, RouterOutlet, RouterLink, Router, LocationStrategy, PathLocationStrategy, ROUTER_PROVIDERS} from "angular2/router";
-// todo add HTML5LocationStrategy (whatever the new name) & remove path location strategy
-
-// app components
-import {Home} from "../pages/home/home";
+import {LocationStrategy, PathLocationStrategy, ROUTER_PROVIDERS} from "angular2/router";
 
 // app services
 //import {appServicesInjectables} from "core/services/services";
-
-@Component({
-	selector: "app",
-	templateUrl: "core/core.bootstrap.template.html", //template: "<router-outlet></router-outlet>",
-	directives: [RouterOutlet, RouterLink]
-})
-@RouteConfig([
-	//TODO put back the old syntax (comment below) once the typings are correct
-	// reference: https://github.com/angular/angular/issues/3637
-	// fix could land w/ 36+
-	{path: "/", component: Home, as: "Home", data: undefined}
-	/*
-	 new Route({path: "/", component: Home, as: "Home", data: undefined}), // written differently
-	 */
-
-
-])
-class App {
-	constructor() {
-		console.log("Application bootstrapped!");
-	}
-}
 
 // bootstrap our app
 console.log("Bootstrapping the App");
@@ -53,8 +26,6 @@ bootstrap(App, [
 	ROUTER_PROVIDERS,
 	HTTP_PROVIDERS,
 	provide(LocationStrategy, {useClass: PathLocationStrategy}) // enables the following: /#/<component_name> rather than /<component_name>
-	//todo replace with
-	//bind(LocationStrategy).toClass(HTML5LocationStrategy) // enable HTML5 history API location strategy
 
 ]).then(
 	(success:any) => {

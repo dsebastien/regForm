@@ -6,6 +6,9 @@
 import gulp from "gulp";
 
 import modernWebDevBuild from "modern-web-dev-build";
-let options = undefined; //TODO define options
+
+let options = {};
+
+options.distEntryPoint = "core/core.bootstrap.js"; // TODO rename to correct file
 
 modernWebDevBuild.registerTasks(gulp, options);
