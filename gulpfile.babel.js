@@ -9,6 +9,4 @@ import modernWebDevBuild from "modern-web-dev-build";
 
 let options = {};
 
-options.distEntryPoint = "core/core.bootstrap.js"; // TODO rename to correct file
-
 modernWebDevBuild.registerTasks(gulp, options);
