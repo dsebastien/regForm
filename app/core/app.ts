@@ -1,6 +1,6 @@
 "use strict";
 
-//import {Observable} from "rxjs/Observable";
+import {TokenService} from "./services/tokenService";
 
 // import Angular 2
 import {Component, provide} from "angular2/core";
@@ -16,13 +16,19 @@ import {Home} from "../pages/home/home";
 @Component({
 	selector: "app",
 	templateUrl: "core/app.template.html", //template: "<router-outlet></router-outlet>",
-	directives: [RouterOutlet, RouterLink]
+	directives: [RouterOutlet, RouterLink],
+	providers: [TokenService]
 })
 @RouteConfig([
 	{path: "/", component: Home, as: "Home", data: undefined}
 ])
 export class App {
-	constructor() {
+	private tokenService:TokenService;
+	constructor(tokenService:TokenService) {
+		this.tokenService = tokenService;
+		
 		console.log("Application bootstrapped!");
+		
+		this.tokenService.requestToken();
 	}
 }

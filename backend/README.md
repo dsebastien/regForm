@@ -1,14 +1,15 @@
 # About
-...
+This readme contains information about the back-end part and how it works.
 
 # Workflow
-* user visits, gets the resources and the application starts in his browser
-* the application requests a token from the back-end
-* the back-end generates a JWT, signs it then encrypts it
+* user visits the page, gets the resources and the application starts in his browser
+* the application requests a token from the back-end (token.php)
+* the back-end generates a JWT, signs it and returns it (not encrypted as there is no sensible information in it)
+* the application saves the token in localStorage
 * the user fills-in the form & submits it
-  * the token is passed along
+  * the application passes the token along with the request (Authorization: Bearer <token>
 * the back-end
-  * checks for the presence of the token, validity, IP, previous tries, etc
+  * checks for the presence of the token, validity, IP, previous tries, etc (done by token_check.php)
     * if ok
       * validates the request
       * saves
@@ -16,6 +17,10 @@
       * returns 200 OK
     * if nok
       * 401 (no token) or 403 (invalid, outdated, different ip, ...)
+
+# Back-end files
+* token.php: generates JWT tokens
+* token_check.php: verifies provided tokens
 
 # Installation & Configuration
 
@@ -27,11 +32,17 @@ For OVH, the .ovhconfig and .htaccess files can be copied to the root of the www
 Upload the token folder to your www root.
 
 ## Configuration
-...
-
-## Secrets
 The back-end has (dirty little) secrets that it uses to sign & encrypt the tokens it generates. The secrets must NEVER be exposed through www.
 Any client can request tokens through the back-end, but IP checks, rate limitations, etc will limit the exposure.
 
 Copy the `jwt-secrets.ini` file to a safe location on your web host.
-Once token.php has been upload, adapt the path towards jwt-secrets.ini.
+Adapt the path towards jwt-secrets.ini in:
+* token.php
+* token_check.php
+
+# Security warning
+Do NOT assume that any of this is SECURE. It is not the case. JWT are used only to play with the technology.
+There is no authentication whatsoever thus anyone can request a token easily
+JWTs are not immune to XSS (because tokens will be stored in localStorage).
+Tokens cannot be revoked and HTTPS won't be implemented on the back-end, thus the whole system is subject to MITM and replay attacks (for the validity period of the tokens).
+https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage/
