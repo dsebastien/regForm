@@ -1,0 +1,3 @@
+SetEnv PHP_VER 7_0
+
+Options -Indexes

@@ -19,14 +19,19 @@
 
 # Installation & Configuration
 
+## Prereqs
+The server MUST have PHP > 5.2, otherwise namespaces, interfaces, etc won't be supported.
+For OVH, the .ovhconfig and .htaccess files can be copied to the root of the www folder.
+
 ## Files
-...
+Upload the token folder to your www root.
 
 ## Configuration
 ...
 
 ## Secrets
-The back-end has (dirty little) secrets that it uses to sign & encrypt. The secrets are not exposed through www.
+The back-end has (dirty little) secrets that it uses to sign & encrypt the tokens it generates. The secrets must NEVER be exposed through www.
 Any client can request tokens through the back-end, but IP checks, rate limitations, etc will limit the exposure.
 
-`jwt-secrets.ini`
+Copy the `jwt-secrets.ini` file to a safe location on your web host.
+Once token.php has been upload, adapt the path towards jwt-secrets.ini.
