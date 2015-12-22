@@ -4,10 +4,46 @@
 	<form action="#">
 		<!-- Nom -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="nom">
+			<input class="mdl-textfield__input" type="text" id="nom" [(ngModel)]="name">
 			<label class="mdl-textfield__label" for="nom">Nom</label>
 		</div>
 		
+		&nbsp;
+		
+		<!-- Prenom -->
+		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
+			<input class="mdl-textfield__input" type="text" id="prenom" [(ngModel)]="surname">
+			<label class="mdl-textfield__label" for="prenom">Prénom</label>
+		</div>
+		
+		<br />
+		
+		<!-- Email -->
+		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
+			<input class="mdl-textfield__input" type="email" id="email" [(ngModel)]="email">
+			<label class="mdl-textfield__label" for="email">Email</label>
+		</div>
+		
+		<br />
+
+		<!-- Nombre d'emplacements -->
+		
+		<!-- Membre de la Ligue -->
+		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="membre" mdl-register-element>
+			<input type="checkbox" id="membre" class="mdl-checkbox__input">
+			<span class="mdl-checkbox__label">Membre de la Ligue des familles</span>
+		</label>
+
+		<hr>
+
+		<div class="mdl-layout-spacer"></div>
+		<div class="mdl-layout__header-row">
+			<!-- Sauvegarde -->
+			<div class="mdl-layout-spacer"></div>
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element (click)="save()">
+				Envoyer
+			</button>
+		</div>
 	</form>
 	
 </div>

@@ -11,8 +11,16 @@ import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerM
 	directives: [RegisterMaterialDesignLiteElement]
 })
 export class Home {
+	name: string = "";
+	surname: string = "";
+	email: string = "";
 
 	constructor() {
 		console.log("Home component loaded");
+	}
+
+	save() {
+		console.log("Saving: ", this.name);
+		//TODO implement
 	}
 }

@@ -9,7 +9,7 @@ export class RegisterMaterialDesignLiteElement {
 	constructor(elementRef:ElementRef) {
 		const htmlElement:HTMLElement = elementRef.nativeElement;
 
-		console.log("Upgrading!");
+		//console.log("Upgrading!");
 		componentHandler.upgradeElement(htmlElement);
 	}
 }
