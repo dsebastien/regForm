@@ -11,16 +11,26 @@ import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerM
 	directives: [RegisterMaterialDesignLiteElement]
 })
 export class Home {
-	name: string = "";
-	surname: string = "";
-	email: string = "";
+	private firstName:string = "";
+	private lastName:string = "";
+	private email:string = "";
+	private slots:number = 1;
 
 	constructor() {
 		console.log("Home component loaded");
 	}
 
 	save() {
-		console.log("Saving: ", this.name);
+		console.log("Saving: ", {
+			firstName: this.firstName,
+			lastName: this.lastName,
+			email: this.email,
+			slots: this.slots
+		});
 		//TODO implement
+	}
+
+	setSlots(slots:number) {
+		this.slots = slots;
 	}
 }

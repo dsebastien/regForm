@@ -2,36 +2,61 @@
 
 <div>
 	<form action="#">
-		<!-- Nom -->
+		<!-- Last name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="nom" [(ngModel)]="name">
-			<label class="mdl-textfield__label" for="nom">Nom</label>
+			<input class="mdl-textfield__input" type="text" id="lastName" [(ngModel)]="lastName" tabindex="1">
+			<label class="mdl-textfield__label" for="lastName">Nom</label>
 		</div>
 		
 		&nbsp;
 		
-		<!-- Prenom -->
+		<!-- First name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="prenom" [(ngModel)]="surname">
-			<label class="mdl-textfield__label" for="prenom">Prénom</label>
+			<input class="mdl-textfield__input" type="text" id="firstName" [(ngModel)]="firstName" tabindex="2">
+			<label class="mdl-textfield__label" for="firstName">Prénom</label>
 		</div>
 		
 		<br />
 		
 		<!-- Email -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="email" id="email" [(ngModel)]="email">
+			<input class="mdl-textfield__input" type="email" id="email" [(ngModel)]="email" tabindex="3">
 			<label class="mdl-textfield__label" for="email">Email</label>
 		</div>
 		
 		<br />
 
-		<!-- Nombre d'emplacements -->
+		<!-- Slots reserved -->
+		<h6>Emplacements à réserver:</h6>
+		<span>
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-1" mdl-register-element>
+				<input type="radio" id="slots-1" class="mdl-radio__button" name="slots" value="1" (click)="setSlots(1)" checked>
+				<span class="mdl-radio__label">1</span>
+			</label>
+			<br />
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-2" mdl-register-element>
+				<input type="radio" id="slots-2" class="mdl-radio__button" name="slots" value="2" (click)="setSlots(2)">
+				<span class="mdl-radio__label">2</span>
+			</label>
+			<br />
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-3" mdl-register-element>
+				<input type="radio" id="slots-3" class="mdl-radio__button" name="slots" value="3" (click)="setSlots(3)">
+				<span class="mdl-radio__label" mdl-register-element>3</span>
+			</label>
+			<br />
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-4" mdl-register-element>
+				<input type="radio" id="slots-4" class="mdl-radio__button" name="slots" value="4" (click)="setSlots(4)">
+				<span class="mdl-radio__label">4</span>
+			</label>
+		</span>
 		
-		<!-- Membre de la Ligue -->
-		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="membre" mdl-register-element>
-			<input type="checkbox" id="membre" class="mdl-checkbox__input">
-			<span class="mdl-checkbox__label">Membre de la Ligue des familles</span>
+		<br />
+		<br />
+		
+		<!-- Member -->
+		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="member" mdl-register-element>
+			<input type="checkbox" id="member" class="mdl-checkbox__input" tabindex="5">
+			<span class="mdl-checkbox__label">Je suis membre de la Ligue des familles</span>
 		</label>
 
 		<hr>
