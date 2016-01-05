@@ -1,0 +1,32 @@
+[
+    {
+        "name": "sofadesign/limonade",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sofadesign/limonade.git",
+            "reference": "be59a72cb47e68eb54971f7b90eca24314a227a8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sofadesign/limonade/zipball/be59a72cb47e68eb54971f7b90eca24314a227a8",
+            "reference": "be59a72cb47e68eb54971f7b90eca24314a227a8",
+            "shasum": ""
+        },
+        "time": "2015-09-21 13:22:06",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "lib/limonade.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "description": "a PHP micro-framework",
+        "homepage": "https://github.com/sofadesign/limonade",
+        "keywords": [
+            "microframework"
+        ]
+    }
+]

@@ -1,0 +1,14 @@
+{
+	"name": "dsebastien/foire-vetements-api",
+	"description": "A basic RESTful API",
+	"require": {
+		"sofadesign/limonade": "dev-master"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Sebastien",
+			"email": "seb@dsebastien.net"
+		}
+	]
+}
