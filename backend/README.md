@@ -28,6 +28,9 @@ This readme contains information about the back-end part and how it works.
 The server MUST have PHP > 5.2, otherwise namespaces, interfaces, etc won't be supported.
 For OVH, the .ovhconfig and .htaccess files can be copied to the root of the www folder.
 
+## Database
+You need to execute the provided DDL (see ddl.sql) so that the required tables are available to the application.
+
 ## Files
 Upload the token folder to your www root.
 
