@@ -1,9 +1,13 @@
 <?php
+
+// TODO implement or drop in favor of REST api
+
 // check JWT presence
 // validate JWT
 
 // check input parameters presence
 // validate input
+// check remaining slots
 
 // save input
 
