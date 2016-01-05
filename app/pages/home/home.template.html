@@ -2,18 +2,18 @@
 
 <div>
 	<form action="#">
-		<!-- Last name -->
+		<!-- First name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="lastName" [(ngModel)]="lastName" tabindex="1">
-			<label class="mdl-textfield__label" for="lastName">Nom</label>
+			<input class="mdl-textfield__input" type="text" id="firstName" [(ngModel)]="firstName" tabindex="1">
+			<label class="mdl-textfield__label" for="firstName">Prénom</label>
 		</div>
 		
 		&nbsp;
-		
-		<!-- First name -->
+
+		<!-- Last name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="firstName" [(ngModel)]="firstName" tabindex="2">
-			<label class="mdl-textfield__label" for="firstName">Prénom</label>
+			<input class="mdl-textfield__input" type="text" id="lastName" [(ngModel)]="lastName" tabindex="2">
+			<label class="mdl-textfield__label" for="lastName">Nom</label>
 		</div>
 		
 		<br />
@@ -22,6 +22,14 @@
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
 			<input class="mdl-textfield__input" type="email" id="email" [(ngModel)]="email" tabindex="3">
 			<label class="mdl-textfield__label" for="email">Email</label>
+		</div>
+
+		&nbsp;
+		
+		<!-- Phone -->
+		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
+			<input class="mdl-textfield__input" type="tel" id="phone" [(ngModel)]="phone" tabindex="4">
+			<label class="mdl-textfield__label" for="phone">Téléphone</label>
 		</div>
 		
 		<br />
@@ -55,17 +63,26 @@
 		
 		<!-- Member -->
 		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="member" mdl-register-element>
-			<input type="checkbox" id="member" class="mdl-checkbox__input" tabindex="5">
+			<input type="checkbox" id="member" class="mdl-checkbox__input" [(ngModel)]="member" tabindex="5">
 			<span class="mdl-checkbox__label">Je suis membre de la Ligue des familles</span>
+		</label>
+		
+		<br />
+		
+		<!-- Wait list -->
+		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="wait-list" mdl-register-element>
+			<input type="checkbox" id="wait-list" class="mdl-checkbox__input" [(ngModel)]="waitList" tabindex="6">
+			<span class="mdl-checkbox__label">S'il n'y a pas assez de places libres, je souhaite être placé sur la liste d'attente</span>
 		</label>
 
 		<hr>
 
 		<div class="mdl-layout-spacer"></div>
 		<div class="mdl-layout__header-row">
-			<!-- Sauvegarde -->
+			
+			<!-- Submit -->
 			<div class="mdl-layout-spacer"></div>
-			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element (click)="save()">
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="7" (click)="submit()">
 				Envoyer
 			</button>
 		</div>
