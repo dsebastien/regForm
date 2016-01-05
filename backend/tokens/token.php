@@ -1,4 +1,6 @@
 <?php
+	// TODO either keep or integrate in REST api
+	
 	// This generates a JSON Web Token (JWT)
 	
 	// Use that if you're not sure which version of PHP is active :)
@@ -68,6 +70,8 @@
 		"token" => $jwt,
 		"expiresIn" => $tokenValidity // seconds
 	);
+	
+	header('Content-Type: application/json');
 	echo json_encode($retVal);
 	
 	// returns an object such as:
