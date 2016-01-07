@@ -48,5 +48,21 @@
 }
 
 .regform-logo{
-  max-width:150px;
+  max-width: 150px;
 }
+
+/* Displayed to the left of valid required fields */
+.ng-valid[required] {
+  margin-left: -10px;
+  text-indent: 5px;
+  border-left: 5px solid #42A948;
+}
+
+/* Displayed to the left of invalid fields */
+/*
+.ng-invalid {
+  margin-left: -10px;
+  text-indent: 5px;
+  border-left: 5px solid #a94442;
+}
+*/

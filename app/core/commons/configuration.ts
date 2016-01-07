@@ -4,7 +4,8 @@
  * Configuration of the client
  */
 export class Configuration {
-	public static backendURL = "http://www.duboishubert.be";
-	public static tokenGenerationEndpoint = Configuration.backendURL + "/tokens/token.php";
-	public static tokenValidationEndpoint = Configuration.backendURL + "/tokens/token_check.php";
+	private static apiURL = "http://www.duboishubert.be/foire_vetements_api/v1";
+	public static tokenGenerationEndpoint = Configuration.apiURL + "/token";
+	public static tokenValidationEndpoint = Configuration.apiURL + "/token_check";
+	public static slotsEndpoint = Configuration.apiURL + "/slots";
 }

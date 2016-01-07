@@ -1,4 +1,3 @@
-# noinspection SqlNoDataSourceInspectionForFile
 CREATE TABLE `foire_vetements` (
 	`id` INT NOT NULL AUTO_INCREMENT ,
 	`uuid` VARCHAR(36) NOT NULL ,

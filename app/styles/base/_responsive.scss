@@ -2,3 +2,8 @@
 // Responsive web design (RWD) related styles.
 //
 //
+.img-responsive{
+  max-width: 100%;
+  display: block;
+  height: auto;
+}

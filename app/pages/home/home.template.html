@@ -1,10 +1,10 @@
-<h3>Formulaire d'inscription</h3>
+<h3 class="display-1">Formulaire d'inscription</h3>
 
 <div>
-	<form action="#">
+	<form (ngSubmit)="onSubmit()" #f="ngForm">
 		<!-- First name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="firstName" [(ngModel)]="firstName" tabindex="1">
+			<input class="mdl-textfield__input" type="text" id="firstName" ngControl="firstName" [(ngModel)]="model.firstName" tabindex="1" required>
 			<label class="mdl-textfield__label" for="firstName">Prénom</label>
 		</div>
 		
@@ -12,7 +12,7 @@
 
 		<!-- Last name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" id="lastName" [(ngModel)]="lastName" tabindex="2">
+			<input class="mdl-textfield__input" type="text" id="lastName" ngControl="lastName" [(ngModel)]="model.lastName" tabindex="2" required>
 			<label class="mdl-textfield__label" for="lastName">Nom</label>
 		</div>
 		
@@ -20,7 +20,7 @@
 		
 		<!-- Email -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="email" id="email" [(ngModel)]="email" tabindex="3">
+			<input class="mdl-textfield__input" type="email" id="email" ngControl="email" [(ngModel)]="model.email" tabindex="3" required>
 			<label class="mdl-textfield__label" for="email">Email</label>
 		</div>
 
@@ -28,8 +28,8 @@
 		
 		<!-- Phone -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="tel" id="phone" [(ngModel)]="phone" tabindex="4">
-			<label class="mdl-textfield__label" for="phone">Téléphone</label>
+			<input class="mdl-textfield__input" type="text" pattern="^[0-9]*$" id="phone" ngControl="phone" [(ngModel)]="model.phone" tabindex="4">
+			<label class="mdl-textfield__label" for="phone">Téléphone (optionnel)</label>
 		</div>
 		
 		<br />
@@ -38,22 +38,22 @@
 		<h6>Emplacements à réserver:</h6>
 		<span>
 			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-1" mdl-register-element>
-				<input type="radio" id="slots-1" class="mdl-radio__button" name="slots" value="1" (click)="setSlots(1)" checked>
+				<input type="radio" id="slots-1" class="mdl-radio__button" name="slots" value="1" (click)="setSlots(1)" required checked>
 				<span class="mdl-radio__label">1</span>
 			</label>
 			<br />
 			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-2" mdl-register-element>
-				<input type="radio" id="slots-2" class="mdl-radio__button" name="slots" value="2" (click)="setSlots(2)">
+				<input type="radio" id="slots-2" class="mdl-radio__button" name="slots" value="2" (click)="setSlots(2)" required>
 				<span class="mdl-radio__label">2</span>
 			</label>
 			<br />
 			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-3" mdl-register-element>
-				<input type="radio" id="slots-3" class="mdl-radio__button" name="slots" value="3" (click)="setSlots(3)">
+				<input type="radio" id="slots-3" class="mdl-radio__button" name="slots" value="3" (click)="setSlots(3)" required>
 				<span class="mdl-radio__label" mdl-register-element>3</span>
 			</label>
 			<br />
 			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="slots-4" mdl-register-element>
-				<input type="radio" id="slots-4" class="mdl-radio__button" name="slots" value="4" (click)="setSlots(4)">
+				<input type="radio" id="slots-4" class="mdl-radio__button" name="slots" value="4" (click)="setSlots(4)" required>
 				<span class="mdl-radio__label">4</span>
 			</label>
 		</span>
@@ -63,26 +63,33 @@
 		
 		<!-- Member -->
 		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="member" mdl-register-element>
-			<input type="checkbox" id="member" class="mdl-checkbox__input" [(ngModel)]="member" tabindex="5">
+			<input type="checkbox" id="member" class="mdl-checkbox__input" ngControl="member" [(ngModel)]="model.member" tabindex="5">
 			<span class="mdl-checkbox__label">Je suis membre de la Ligue des familles</span>
 		</label>
 		
 		<br />
 		
 		<!-- Wait list -->
-		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="wait-list" mdl-register-element>
-			<input type="checkbox" id="wait-list" class="mdl-checkbox__input" [(ngModel)]="waitList" tabindex="6">
+		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="waitList" mdl-register-element>
+			<input type="checkbox" id="waitList" class="mdl-checkbox__input" ngControl="waitList" [(ngModel)]="model.waitList" tabindex="6">
 			<span class="mdl-checkbox__label">S'il n'y a pas assez de places libres, je souhaite être placé sur la liste d'attente</span>
 		</label>
+		
+		<hr />
 
-		<hr>
+		<!-- Captcha -->
+		<div class="mdl-layout-spacer"></div>
+		<div class="mdl-layout__header-row">
+			<div class="mdl-layout-spacer"></div>
+			<!-- activated in the controller -->
+			<div id="captcha"></div>
+		</div>
 
 		<div class="mdl-layout-spacer"></div>
 		<div class="mdl-layout__header-row">
-			
 			<!-- Submit -->
 			<div class="mdl-layout-spacer"></div>
-			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="7" (click)="submit()">
+			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="7" [disabled]="!f.form.valid || !captchaCompletedSuccessfully()">
 				Envoyer
 			</button>
 		</div>

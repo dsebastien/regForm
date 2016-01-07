@@ -1,6 +1,6 @@
 "use strict";
 
-import {TokenService} from "./services/tokenService";
+import {ApiService} from "./services/api/apiService";
 
 // import Angular 2
 import {Component, provide} from "angular2/core";
@@ -17,18 +17,18 @@ import {Home} from "../pages/home/home";
 	selector: "app",
 	templateUrl: "core/app.template.html", //template: "<router-outlet></router-outlet>",
 	directives: [RouterOutlet, RouterLink],
-	providers: [TokenService]
+	providers: [ApiService]
 })
 @RouteConfig([
 	{path: "/", component: Home, as: "Home", data: undefined}
 ])
 export class App {
-	private tokenService:TokenService;
-	constructor(tokenService:TokenService) {
-		this.tokenService = tokenService;
-		
+	private apiService:ApiService;
+	constructor(apiService:ApiService) {
+		this.apiService = apiService;
+
 		console.log("Application bootstrapped!");
 		
-		this.tokenService.requestToken();
+		this.apiService.initialize();
 	}
 }
