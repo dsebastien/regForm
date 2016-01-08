@@ -24,11 +24,14 @@ import {Home} from "../pages/home/home";
 ])
 export class App {
 	private apiService:ApiService;
+
+	/**
+	 * We retrieve the API service only to be sure that it is initialized right off the bat
+	 * @param apiService the API service
+     */
 	constructor(apiService:ApiService) {
 		this.apiService = apiService;
 
 		console.log("Application bootstrapped!");
-		
-		this.apiService.initialize();
 	}
 }
