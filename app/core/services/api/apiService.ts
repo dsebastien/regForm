@@ -9,8 +9,6 @@ import {Http, Response, RequestMethod, RequestOptions} from "angular2/http";
 import {Observable} from "rxjs";
 import "rxjs/add/operator/map";
 
-
-
 /**
  * Service responsible for requesting/checking tokens
  */

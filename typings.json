@@ -1,0 +1,7 @@
+{
+  "dependencies": {},
+  "devDependencies": {},
+  "ambientDependencies": {
+    "localForage": "github:DefinitelyTyped/DefinitelyTyped/localForage/localForage.d.ts#c192586e9e3c5180e271dbd21e7295aaf1dcdbb6"
+  }
+}
