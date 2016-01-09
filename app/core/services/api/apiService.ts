@@ -10,7 +10,8 @@ import {Observable} from "rxjs";
 import "rxjs/add/operator/map";
 
 /**
- * Service responsible for requesting/checking tokens
+ * Service responsible for requesting/checking tokens.
+ * Must be loaded as soon as possible in the application
  */
 @Injectable()
 export class ApiService {
