@@ -1,3 +1,7 @@
+/// <reference path="../../../../typings/main.d.ts" />
+/// <reference path="../../../../typings/custom.d.ts" />
+
+
 "use strict";
 
 import {Configuration} from "../../commons/configuration";
@@ -9,7 +13,12 @@ import {Http, Response, RequestMethod, RequestOptions} from "angular2/http";
 import {Observable} from "rxjs";
 import "rxjs/add/operator/map";
 
-/**
+//import {localForage} from "localforage";
+import _localForage = require("localforage");
+var localForage = _localForage.localForage;
+//import {default as localForage} from "localforage"; // alternative syntax using the current localForage typings...
+
+/*
  * Service responsible for requesting/checking tokens.
  * Must be loaded as soon as possible in the application
  */
@@ -28,9 +37,14 @@ export class ApiService {
 		// todo use localForage to retrieve the token if present
 		// if present, check validity before requesting a new one
 		this.requestToken();
+		localForage.setItem("key", "cool");
+		console.log("Saved!");
+		//localForage.clear();
+		//FIXME check that items can be read back
 	}
 
 	private requestToken() {
+		console.log("Requesting token...");
 		// todo if there is already a token in local storage check if it is still valid
 		// if it is then do nothing
 
@@ -47,7 +61,7 @@ export class ApiService {
 			});
 	}
 
-	/**
+	/*
 	 * Checks if the current token is still valid.
 	 * If invalid, a new token should be requested
 	 * @returns {boolean} true if the token is still valid

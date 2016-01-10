@@ -15,9 +15,6 @@ import {ELEMENT_PROBE_PROVIDERS} from "angular2/platform/common_dom";
 // reference: http://blog.thoughtram.io/angular/2015/06/16/routing-in-angular-2.html
 import {LocationStrategy, PathLocationStrategy, ROUTER_PROVIDERS} from "angular2/router";
 
-// app services
-//import {appServicesInjectables} from "core/services/services";
-
 // enable production mode of Angular
 // enableProdMode(); // enable for production (also uncomment the import above!)
 
