@@ -13,10 +13,8 @@ import {Http, Response, RequestMethod, RequestOptions} from "angular2/http";
 import {Observable} from "rxjs";
 import "rxjs/add/operator/map";
 
-//import {localForage} from "localforage";
-import _localForage = require("localforage");
-var localForage = _localForage.localForage;
-//import {default as localForage} from "localforage"; // alternative syntax using the current localForage typings...
+//TODO remove and re-import localForage once a solution is found for #41: https://github.com/dsebastien/regForm/issues/41
+const localForage = require("localforage");
 
 /*
  * Service responsible for requesting/checking tokens.
@@ -65,7 +63,7 @@ export class ApiService {
 	 * Checks if the current token is still valid.
 	 * If invalid, a new token should be requested
 	 * @returns {boolean} true if the token is still valid
-     */
+	 */
 	isTokenStillValid() {
 		return Date.now() < this.currentTokenDetails.expirationTime;
 	}
