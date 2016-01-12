@@ -4,9 +4,9 @@ dist/
 *.log
 *.map
 *.d.ts
-!typings
+!typings/
 typings/*
-!typings/tsd.d.ts
+!typings/custom/
 !typings/custom.d.ts
 !typings/README.md
 
