@@ -27,7 +27,7 @@ export class ApiService {
 	private static HEADER_PREFIX:string = "Bearer";
 	private static LOCALSTORAGE_TOKEN_VARIABLE:string = "id_token";
 	private currentTokenDetails:TokenDetails<string>;
-
+	
 	constructor(http:Http) {
 		console.log("Loading the API service");
 		this.http = http;
@@ -36,57 +36,59 @@ export class ApiService {
 			throw new Error("The HTTP service has not been provided but is mandatory!");
 		}
 
-		this.initializeToken();
-		//localForage.setItem("key", "cool", (err, result) => { alert(result.value)});
-		//console.log("Saved!");
+		this.initialize();
 
+		//localForage.setItem(ApiService.LOCALSTORAGE_TOKEN_VARIABLE, "cool", (err, result) => { alert(result);});
 		//localForage.clear();
 		//FIXME check that items can be read back
 	}
 
-	private initializeToken() {
-		localForage.getItem(ApiService.LOCALSTORAGE_TOKEN_VARIABLE)
-			.then((value:string) => {
-				if (value === null) {
-					// fixme in this case we need to request a new token
-					// (saved automatically in this class)
-					// put it here in localstorage
-				} else {
-					console.log("Found: ", value);
-				}
-			}, (error:Error) => {
-				console.error("Error while checking for token presence in LocalStorage")
-			});
+	private initialize = () => {
+		let newTokenRequired:boolean = false;
+		
+		const currentTokenObservable:Observable<string> = this.getCurrentToken();
+		currentTokenObservable.subscribe(value => {
+			if (value !== null) {
+				console.log("Token loaded: ", value);
+				//FIXME need to convert back to TokenDetails
+			} else {
+				console.log("No token present!");
+				newTokenRequired = true;
+			}
+		}, (error) => {
+			console.log("Could not retrieve the current token.");
+			newTokenRequired = true;
+		}, () => {
+			if (newTokenRequired === true) {
+				console.log("We totally need a new token!!");
+			}
+		});
+
+		//localForage.setItem(ApiService.LOCALSTORAGE_TOKEN_VARIABLE, "cool", (err, result) => { alert(result);});
+		//localForage.clear();
+		//FIXME check that items can be read back
+		
+	}
+
+	private getCurrentToken():Observable<string> {
+		return Observable.fromPromise(localForage.getItem(ApiService.LOCALSTORAGE_TOKEN_VARIABLE));
 	}
 
 	private requestToken():Observable<any> {
-		const retVal: Subject<TokenDetails> = new Subject<TokenDetails>();
+		const retVal:Subject<TokenDetails<string>> = new Subject<TokenDetails<string>>();
 		console.log("Requesting token...");
 		const lastTokenRequestTime = Date.now();
 		this.http.get(Configuration.tokenGenerationEndpoint)
 			.map(res => res.json())
 			.subscribe(tokenAsJSON => {
-				const tokenDetails = new TokenDetails<string>();
-				tokenDetails.token = tokenAsJSON.token;
-				tokenDetails.expirationTime = lastTokenRequestTime + (tokenAsJSON.expiresIn * 1000); // seconds to milliseconds
-				//console.log("Token requested on ",new Date(this.lastTokenRequestTime));
-				console.log("The token will expire on: " + new Date(tokenDetails.expirationTime));
+				const token = tokenAsJSON.token;
+				const expirationTime = lastTokenRequestTime + (tokenAsJSON.expiresIn * 1000); // seconds to milliseconds
+				const tokenDetails = new TokenDetails<string>(token, expirationTime);
+				console.log("Token requested on ", new Date(lastTokenRequestTime));
+				console.log("The token will expire on: " + new Date(expirationTime));
 				this.currentTokenDetails = tokenDetails;
 				retVal.next(tokenDetails);
 			});
-		return retVal;
-	}
-
-	/*
-	 * Checks if the current token is still valid.
-	 * If invalid, a new token should be requested
-	 * @returns {boolean} true if the token is still valid
-	 */
-	isTokenStillValid() {
-		let retVal:boolean = false;
-		if (this.currentTokenDetails !== null) {
-			return retVal = Date.now() < this.currentTokenDetails.expirationTime;
-		}
 		return retVal;
 	}
 }

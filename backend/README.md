@@ -87,9 +87,11 @@ Here you find information about the API and how to interact with it, not the inn
 
 Steps:
 * user visits the page, gets the resources and the application starts in his browser
-* the application requests a token from the back-end (token.php)
-* the back-end generates a JWT, signs it and returns it (not encrypted as there is no sensible information in it)
-* the application saves the token in localStorage
+* the application checks localStorage to see if a token is already present
+* if there is a token and it is still valid, no new token is requested
+* if there is no token or if the saved one is invalid/expired, the application requests a token from the back-end (token.php)
+  * the back-end generates a JWT, signs it and returns it (not encrypted as there is no sensible information in it)
+  * the application saves the token in localStorage
 
 ## Remaining slots display
 Pre-requisites:

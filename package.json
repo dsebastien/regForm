@@ -7,6 +7,9 @@
     "url": "https://twitter.com/dsebastien"
   },
   "contributors": [],
+  "repository": "https://github.com/dsebastien/regForm",
+  "bugs": "https://github.com/dsebastien/regForm/issues",
+  "licence": "MIT",
   "homepage": "https://www.dsebastien.net",
   "keywords": [
     "web"
