@@ -34,16 +34,17 @@ Here you find information about the API and how to interact with it, not the inn
            "expiresIn":1800
         }
       ```
-* /token/check (implemented)
-  * Required HTTP Header: `Authorization: Bearer <token>`
+* /token/check GET (implemented)
+  * Required HTTP Header: `X_Authorization: Bearer <token>`
   * Responses
     * 200 OK
     * error
       * 401 Unauthorized (credentials rejected)
         * if header not defined
         * if header not correctly defined
+      * 403 Forbidden
         * if provided token invalid or expired
-* /slots GET
+* /slots GET (implemented)
   * public
   * get information about slots (total available, reserved, remaining)
   * Responses
@@ -59,20 +60,28 @@ Here you find information about the API and how to interact with it, not the inn
 ### Yet to come
 * /register POST
   * POST: registration information
-    * Required HTTP Header: `Authorization: Bearer <token>`
-    * Required parameters 
-      * firstname
-      * lastname
-      * email
-      * phone
-      * slots [1-4]
-      * member
-      * waitList
-        * if the user wants to be on the wait list in case there are no slots left
+    * Required HTTP Header: `X_Authorization: Bearer <token>`
+    * Required payload: JSON containing
+      ```
+        {
+        	"firstname": "...",
+        	"lastname": "...",
+        	"email": "...",
+        	"phone": "...",
+        	"slots": x,
+        	"member": x, // if the user is a member or not
+        	"waitList": x, // if the user wants to be on the wait list in case there are no slots left
+        	
+        }
+      ```
+    * Checks if there is already a registration for the same email
+      * if so, mail already registered error
     * requests user confirmation (mail)
     * Responses:
       * confirmation mail sent
       * error
+        * 401: unauthorized (no token)
+        * 403: forbidden (invalid, outdated, different ip, ...)
         * invalid input
         * mail already registered
 * /confirm_registration GET
@@ -83,32 +92,7 @@ Here you find information about the API and how to interact with it, not the inn
 
 # Specifications
 
-## Token generation (/token)
-
-Steps:
-* user visits the page, gets the resources and the application starts in his browser
-* the application checks localStorage to see if a token is already present
-* if there is a token and it is still valid, no new token is requested
-* if there is no token or if the saved one is invalid/expired, the application requests a token from the back-end (token.php)
-  * the back-end generates a JWT, signs it and returns it (not encrypted as there is no sensible information in it)
-  * the application saves the token in localStorage
-
-## Remaining slots display
-Pre-requisites:
-* the application has requested & received a token
-
-Steps:
-* the application requests the number of remaining slots (API call)
-* the back-end checks the presence and validity of the token before accepting the request
-  * if the token is not present or invalid, return 403
-* the back-end calculates the remaining slots:
-  * total = `total_slots` (`foire_vetements_meta`)
-  * used = SUM(slots) FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0
-  * remaining = total - used slots
-* the back-end returns information about the slots
-* the application displays the information
-
-## Basic registration flow
+## Registration flow
 Pre-requisites:
 * the application has requested & received a token
 
@@ -125,10 +109,10 @@ The user submits the form
     * if the user has chosen not to be added to the waiting list
       * an information message is displayed: "no slots available but you can request to be added to the wait list"
   * if yes, the request is sent
-* the application passes the token along when it sends requests: Authorization: Bearer <token>
+* the application passes the token along when it sends requests: X_Authorization: Bearer <token>
 
-When the back-end receives a subscription request
-* it checks for the presence of the token, validity, IP, previous tries, etc (done by token_check.php)
+When the back-end receives a subscription request (register call)
+* it checks for the presence of the token, validity, IP, previous tries, etc
   * if nok
     * 401: no token
     * 403: unauthorized (invalid, outdate, different ip, ...)
@@ -139,6 +123,8 @@ When the back-end receives a subscription request
   * if validation error, return error
     * check maximum number of slots
     * validates user input
+  * checks if the email is not already in the database
+    * if so, error: mail already registered
   * checks remaining slots
     * if requested > available
       * if user wishes to be on wait list, continue
@@ -173,6 +159,34 @@ Once the user clicks on the registration confirmation mail
   * redirect to confirmation success page w/ registration details
 
 Once the application gets to the confirmation success page the registration details are displayed again
+
+
+## Token generation (/token) (implemented)
+
+Steps:
+* user visits the page, gets the resources and the application starts in his browser
+* the application checks localStorage to see if a token is already present
+* if there is a token and it is still valid, no new token is requested
+* if there is no token or if the saved one is invalid/expired, the application requests a token from the back-end (token.php)
+  * the back-end generates a JWT, signs it and returns it (not encrypted as there is no sensible information in it)
+  * the application saves the token in localStorage
+
+## Remaining slots display (implemented)
+Pre-requisites:
+* the application has requested & received a token
+
+Steps:
+* the application requests the number of remaining slots (API call)
+* the back-end checks the presence and validity of the token before accepting the request
+  * if the token is not present or invalid, return 403
+* the back-end calculates the remaining slots:
+  * total = `total_slots` (`foire_vetements_meta`)
+  * used = SUM(slots) FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0
+  * remaining = total - used slots
+* the back-end returns information about the slots
+* the application displays the information
+  * remaining slots over total slots
+  * displays a warning if <= 10% of slots remaining
 
 ## Emails
 ### Registration confirmation request

@@ -6,6 +6,9 @@
 // Easily load dependencies through composer's autoload script
 require "vendor/autoload.php";
 
+// Load utils
+require "api_utils.php";
+
 // toggle for production
 $production = false;
 
