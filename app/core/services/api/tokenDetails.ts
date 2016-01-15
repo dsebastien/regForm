@@ -1,19 +1,20 @@
 /**
- * Class that contains a token of some sort
+ * Class that represents a token of some sort
  */
-export class TokenDetails<TokenType> {
+export class TokenDetails<TokenType> implements Token<TokenType> {
 	token:TokenType;
 	expirationTime:number;
 
 	constructor(token:TokenType, expirationTime:number) {
-		if (token === null) {
-			throw new Error("The token cannot be null!");
+		if (token === null || token === undefined) {
+			throw new Error("The token cannot be null or undefined!");
 		}
 		this.token = token;
 		this.expirationTime = expirationTime;
 	}
+}
 
-	isStillValid = ():boolean => {
-		return Date.now() < this.expirationTime;
-	};
+export interface Token<TokenType>{
+	token:TokenType;
+	expirationTime:number;
 }

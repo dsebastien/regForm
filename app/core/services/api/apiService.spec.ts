@@ -10,6 +10,6 @@ describe("API Service", () => {
 	it("should", () => {
 		expect(true).toBe(true);
 	});
-	
+
 	//FIXME add tests
 });

@@ -24,7 +24,7 @@ export class Home implements AfterViewInit {
 	private captchaResponse:string = "";
 
 	constructor() {
-		console.log("Home component loaded");
+		console.log("Home page loaded");
 	}
 
 	/**
@@ -68,6 +68,7 @@ export class Home implements AfterViewInit {
 		});
 		//TODO implement
 		//TODO test print(this.model);
+		//FIXME avoid multiple form submissions!
 	}
 
 	// TODO remove this workarond when we know how to handle radio button groups with ngForm ngModel ...

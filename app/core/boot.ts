@@ -3,8 +3,6 @@
 // import the application
 import {App} from "./app";
 
-//import {Observable} from "rxjs/Observable";
-
 // import Angular 2
 import {bootstrap} from "angular2/platform/browser";
 import {provide, enableProdMode} from "angular2/core";
