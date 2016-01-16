@@ -57,6 +57,12 @@ function checkToken($request, $response){
     	if($tokenConfiguration["issuerClaim"] !== $decoded_array["iss"]){
     		throw new Exception("The issuer claim is invalid");
     	}
+    	
+    	// validate that the client IP stored in the token is the same as the current client IP
+    	$currentClientIP = $_SERVER['REMOTE_ADDR'];
+    	if($decoded_array["clientIPAddress"] !== $currentClientIP){
+    		throw new Exception("The current client IP is not the same as the original client IP that requested the token");
+    	}
     } catch (Exception $e) {
         $response = $response->withStatus(403);
         return $response;
@@ -64,6 +70,32 @@ function checkToken($request, $response){
     
     return $response; // left untouched in this case
 }
+
+// Throws an exception if the provided key does not exist in the given array
+function ensureThatKeyExists($key, $array){
+	if(!array_key_exists($key, $array)){
+		throw new Exception("Missing key: " .$key);
+	}
+}
+
+// Throws an exception if the provided value is undefined, null or empty
+function ensureNotEmpty($value){
+	if($value === null || trim($value) === ""){
+		throw new Exception("Unset, null or empty value: " .$value);
+	}
+	return trim($value);
+}
+
+// Throws an exception if the provided value is not an email
+function ensureIsEmail($value){
+	$isValidEmail = filter_var($value, FILTER_VALIDATE_EMAIL);
+	if(!$isValidEmail){
+		throw new Exception("The value is not a valid e-mail: ".$value);
+	}
+    return $value;
+}
+
+// FIXME implement UUID generation function
 
 
 // send confirmation mail

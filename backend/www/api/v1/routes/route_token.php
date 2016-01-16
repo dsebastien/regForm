@@ -49,6 +49,7 @@ $app->get('/token', function($request, $response) {
 		// protect against replay attacks
 		"exp" => $tokenExpirationTime,
 		
+		// to tie the token to a specific client IP
 		"clientIPAddress" => $clientIP
 	);
 	

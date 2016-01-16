@@ -6,14 +6,11 @@ $app->get('/slots', function($request, $response) {
 	// load DB configuration
 	// adapt the path depending on where the file is located
 	$dbConfiguration = parse_ini_file("../../../db-secrets.ini");
-	
-	//echo "charset: " . $dbConfiguration["charset"];
-	
+	// $dbConfiguration["charset"];
 	$dbConnection = new mysqli($dbConfiguration["host"], $dbConfiguration["username"], $dbConfiguration["password"], $dbConfiguration["name"]);
-	
-	if($dbConnection->connect_error){
-		throw new Exception("Could not connect to the database. Error: ".$dbConnection->connect_error);
-	}
+    if($dbConnection->connect_error){
+    	throw new Exception("Could not connect to the database. Error: ".$dbConnection->connect_error);
+    }
 	
 	// initialization
 	$totalSlots = 0;
@@ -23,6 +20,7 @@ $app->get('/slots', function($request, $response) {
 	// get total slots
 	$sql = 'SELECT total_slots FROM `foire_vetements_meta`';
 	
+	$result = null;
 	if(!$result = $dbConnection->query($sql)){
 		throw new Exception("There was an error running the query. Error: ".$dbConnection->error);
     }
@@ -32,10 +30,10 @@ $app->get('/slots', function($request, $response) {
     }
     $result->free();
 	
-	
-	// get used slots (i.e., slots reserved by people who have confirmed and are not on the wait list
+	// get used slots (i.e., slots reserved by people who have confirmed and are not on the wait list)
 	$sql = 'SELECT SUM(slots) FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0';
 	
+	$result = null;
 	if(!$result = $dbConnection->query($sql)){
 		throw new Exception("There was an error running the query: ".$dbConnection->error);
 	}
