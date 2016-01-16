@@ -136,7 +136,7 @@ export class ApiService {
 	private prepareProtectedRequest() {
 		//FIXME implement
 		// prepare Http request
-		// add Authorization: Bearer <token>
+		// add X_Authorization: Bearer <token>
 		// return the configured request object
 	}
 
