@@ -1,39 +1,5 @@
-* /register POST
-  * POST: registration information
-    * Required HTTP Header: `X_Authorization: Bearer <token>`
-    * Required payload: JSON containing
-      ```
-        {
-        	"firstName": "...",
-        	"lastName": "...",
-        	"email": "...",
-        	"phone": "...",
-        	"slots": x,
-        	"member": false|true,
-        	"waitList": false|true
-        }
-      ```
-    * Checks if there is already a registration for the same email
-      * if so, mail already registered error
-    * requests user confirmation (mail)
-    * Responses:
-      * 200 OK: confirmation mail sent
-      * error
-        * 401: unauthorized (no token)
-		* 403: forbidden (token, invalid, outdated, ...)
-        * 400: bad request (invalid input)
-        * 409: mail already registered. Body of the response:
-           ```
-           {
-            "email_already_registered": "<email>"
-           }
-           ```
-        * 409: not enough slots available. Body of the response:
-          ```
-          {
-          	"not_enough_slots_available": "<remaining_slots>"
-          }
-          ```
+# Yet to be implemented
+
 * /confirm_registration GET
   * Required parameters
     * uuid: user's uuid
@@ -61,17 +27,36 @@
   		  }
   		  ```
 
-
-
-
-
-
 * registration update
 * registration cancellation
 
 # Specifications
 
-## Registration flow
+## Registration confirmation by end user
+Pre-requisites:
+* the user has clicked on the registration confirmation link in the mail he received
+
+Steps:
+When the back-end receives a registration confirmation request (confirm_registration call)
+* validates the provided parameters
+* sanitizes the provided parameters
+* checks if a registration with that uuid exists
+  * if not, return 4xx
+* checks if already confirmed
+  * if so, redirect to confirmation page in the app
+* calculate available slots
+* if enough slots available for the user
+  * update the 'confirmed' field (set to true)
+  * update the 'on_wait_list' field (set to false)
+  * send registration confirmation mail
+  * redirect to confirmation success page w/ registration details  
+* if not enough slots available
+  * send registration confirmation mail => user on wait list!
+    * will receive another mail if/when slots free up for him
+* if error
+  * redirect to application error page
+
+## Registration form
 Pre-requisites:
 * the application has requested & received a token
 
@@ -95,10 +80,10 @@ Example requests:
 A non-member wishes does not wish to be on the wait list:
 ```
 {
-	"firstName": "Sebastien",
-	"lastName": "D",
-	"email": "seb@dsebastien.net",
-	"phone": "3247123",
+	"firstName": "...",
+	"lastName": "...",
+	"email": "...",
+	"phone": "...",
 	"slots": 2,
 	"member": false,
 	"waitList": false
@@ -108,82 +93,31 @@ A non-member wishes does not wish to be on the wait list:
 A non-member wished to be on the wait list:
 ```
 {
-	"firstName": "Sebastien",
-	"lastName": "D",
-	"email": "seb@dsebastien.net",
-	"phone": "3247123",
+	"firstName": "...",
+	"lastName": "...",
+	"email": "...",
+	"phone": "...",
 	"slots": 2,
 	"member": false,
 	"waitList": true
 }
 ```
 
-When the back-end receives a subscription request (register call)
-* it checks for the presence of the token, validity, IP match
-  * if nok
-    * 401: no token
-    * 403: unauthorized (token invalid, outdated, ...)
-* it validates the provided input
-  * all information provided
-  * slots is in the valid range
-  * data format is ok (e.g., mail, phone)
-  * if validation error, return error 400
-    * check maximum number of slots
-    * validates user input
-* checks if the email is not already in the database
-  * if so, return error 409. Body of the response:
-    ```
-    {
-       	"email_already_registered": "..."
-	}
-	```
-* checks remaining slots
-  * if requested > available
-    * if user does not wish to be on wait list, return error
-	  * 409: not enough slots available. Body of the response:
-        ```
-		{
-        	"not_enough_slots_available": "<remaining_slots>"
-        }
-		```
-* generates UUID for registration
-* saves registration details in database
-  * confirmed == false at this point in DB
-  * if error
-    * return 500
+## Registration form submission result front-end display
+Pre-requisites:
+* the back-end has provided a response to the registration request
 
-
-TODO
-
-* sends confirmation mail to the requester
-  * see Registration confirmation mail section
-* returns 200 OK with registration id and registration details
-
+Steps:
 Once the application receives the response
   * it first checks the response code
     * 4xx or 5xx: display generic error page
     * 200: redirect to confirmation page with all registration details (give the id)
   * if confirmation page
     * display registration details
-    * explain that they should check their mail
-
-Once the user clicks on the registration confirmation mail
-  * validates the provided parameters
-  * encodes the provided parameters
-  * checks if a registration with that uuid exists
-    * if not, return 4xx
-  * if it exists
-    * if it is already confirmed: do nothing
-    * update the 'confirmed' field (set to true)
-    * update the 'on_wait_list' field (set to false)
-  * if error
-    * redirect to application error page
-  * redirect to confirmation success page w/ registration details
-
-Once the application gets to the confirmation success page the registration details are displayed again
+    * explain that they should check their mailbox
 
 
-## eMail available (/email_check)
+## E-mail available (/email_check)
 Steps:
 
 * the application send a GET request towards the email_check endpoint
@@ -216,11 +150,10 @@ Steps:
   }
   ```
 
-## Emails
-### Registration confirmation request
-* goal: ensure correct e-mail/person
+## E-mails
+
+### Registration confirmation
+* goal: confirm the registration to the user
 * contains
   * details about the reservation (firstname, lastname, mail, phone, slots reserved, ...)
   * different message whether on wait list or not
-  * a link that the user must click on to confirm his registration
-    * link to /confirm_registration API call

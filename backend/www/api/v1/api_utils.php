@@ -115,29 +115,61 @@ function ensureIsEmail($value){
     return $value;
 }
 
-
-// send confirmation mail
-// OVH mailing reference: http://a-pellegrini.developpez.com/tutoriels/php/mail/
-/*
-$fromName = "John Doe";
-$from = "Jane@doe.com";
-$to = "whoeveriwant@noop";
-$subject = "Hello";
-$message = "World";
-
-$headers  = "MIME-Version: 1.0 \n";
-$headers .= "Content-type: text/plain; charset=utf-8 \n"; // text/html; charset=utf-8
-$headers .= "From: ".$fromName." <".$from."> \n";
-//$headers .= "Reply-To: ".$sender." \n";
-$headers .= "Priority: normal \n"; // urgent; non-urgent
-$headers .= "\n";
-
-$result = @mail ($to, $subject, $message, $headers);
-if ($CR_Mail === FALSE){
-	echo "Failed to send"; // todo
-}else{
-	echo "Sent";
+// Sends an e-mail (text or html) using the provided information
+// Specific implementation for OVH
+// PHP mailing reference: http://a-pellegrini.developpez.com/tutoriels/php/mail/
+// if unavailable, reference in 'docs' folder
+// The provided "format" argument MUST either be "html" or "plain" (i.e., text); if not provided or null, it defaults to "plain"
+function sendEmail($fromName, $from, $to, $subject, $message, $format){
+	$retVal = true; // it's important to be optimistic in life
+	
+	if($format === null){
+		$format = "plain";
+	}
+	$format = strtolower($format); // avoid case surprises
+	
+	if(!$format === "plain" && !$format === "html"){
+		throw new Exception("The format MUST be either html or text");
+	}
+	
+	$headers  = "MIME-Version: 1.0 \n";
+	$headers .= "Content-type: text/".$format."; charset=utf-8 \n"; // text/html; charset=utf-8
+	$headers .= "From: ".$fromName." <".$from."> \n";
+	//$headers .= "Reply-To: ".$sender." \n";
+	$headers .= "Priority: normal \n"; // urgent; non-urgent
+	$headers .= "\n";
+	$result = @mail ($to, $subject, $message, $headers);
+	
+	if ($CR_Mail === FALSE){
+		$retVal = false; // failed to send
+    }
+    
+    return $retVal;
 }
-*/
+
+// Helper methods for sending emails
+function sendHTMLEmail($fromName, $from, $to, $subject, $message){
+	return sendEmail($fromName, $from, $to, $subject, $message, "html");
+}
+
+function sendTextEmail($fromName, $from, $to, $subject, $message){
+	return sendEmail($fromName, $from, $to, $subject, $message, "plain");
+}
+
+
+// Determine if served over HTTP or HTTPS
+// reference: http://stackoverflow.com/questions/17201170/php-how-to-get-the-base-domain-url
+function getProtocol(){
+	$protocol = "http";
+	if(isset($_SERVER["HTTPS"])){
+        $protocol = ($_SERVER["HTTPS"] && $_SERVER["HTTPS"] != "off") ? "https" : "http";
+    }
+    return $protocol;
+}
+
+// Return the base URL
+function getBaseURL(){
+	return getProtocol() . "://" . $_SERVER['SERVER_NAME'];
+}
 
 ?>

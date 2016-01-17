@@ -56,6 +56,54 @@ Here you find information about the API and how to interact with it, not the inn
       		"remainingSlots":100
       	}
       ```
+* /register POST (implemented)
+  * POST: registration information
+    * Required HTTP Header: `X_Authorization: Bearer <token>`
+    * Required payload: JSON containing
+      ```
+        {
+        	"firstName": "...",
+        	"lastName": "...",
+        	"email": "...",
+        	"phone": "...",
+        	"slots": x,
+        	"member": false|true,
+        	"waitList": false|true
+        }
+      ```
+    * Checks if there is already a registration for the same email
+      * if so, mail already registered error
+    * requests user confirmation (mail)
+    * Responses:
+      * 200 OK: confirmation mail sent. Body of the response: 
+        ```
+        {
+        	"uuid": "...",
+        	"firstName": "...",
+        	"lastName": "...",
+        	"email": "...",
+        	"phone": "...",
+        	"slots": 2,
+        	"member": false,
+        	"waitList": true
+        }
+        ```
+      * error
+        * 401: unauthorized (no token)
+		* 403: forbidden (token, invalid, outdated, ...)
+        * 400: bad request (invalid input)
+        * 409: mail already registered. Body of the response:
+           ```
+           {
+            "email_already_registered": "<email>"
+           }
+           ```
+        * 409: not enough slots available. Body of the response:
+          ```
+          {
+          	"not_enough_slots_available": "<remaining_slots>"
+          }
+          ```
 
 
 
@@ -89,11 +137,63 @@ Steps:
   * remaining slots over total slots
   * displays a warning if <= 10% of slots remaining
 
+## Registration form back-end processing
+Pre-requisites:
+* the application has sent the filled-in form to the back-end
 
+Steps:
+When the back-end receives a registration request (register call)
+* it checks for the presence of the token, validity, IP match
+  * if nok
+    * 401: no token
+    * 403: unauthorized (token invalid, outdated, ...)
+* it validates the provided input
+  * all information provided
+  * slots is in the valid range
+  * data format is ok (e.g., mail, phone)
+  * if validation error, return error 400
+    * check maximum number of slots
+    * validates user input
+* checks if the email is not already in the database
+  * if so, return error 409. Body of the response:
+    ```
+    {
+       	"email_already_registered": "..."
+	}
+	```
+* checks remaining slots
+  * if requested > available
+    * if user does not wish to be on wait list, return error
+	  * 409: not enough slots available. Body of the response:
+        ```
+		{
+        	"not_enough_slots_available": "<remaining_slots>"
+        }
+		```
+* generates UUID for registration
+* saves registration details in database
+  * confirmed == false at this point in DB
+* sends confirmation request mail to the requester (see below)
+  * if mail not sent successfully, return error (500)
+* returns 200 OK with registration id and registration details as JSON in the following form:
+```
+{
+	"uuid": "...",
+	"firstName": "...",
+	"lastName": "...",
+	"email": "...",
+	"phone": "...",
+	"slots": 2,
+	"member": false,
+	"waitList": true
+}
+```
 
-
-
-
+## E-mails
+### Registration confirmation request
+* goal: ensure correct e-mail/person
+* a link that the user must click on to confirm his registration
+  * link to /confirm_registration API call
 
 
 # Installation & Configuration

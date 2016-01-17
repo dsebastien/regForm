@@ -4,15 +4,14 @@ $app->post('/register', function($request, $response) {
 	// This allows users to register
 	
 	// First, we need to check if the request has a valid token attached
-	// FIXME put back once ready
-	/*
-	$response = checkToken($request, $response);
-	
-    if($response->getStatusCode() != 200){
-		// Sorry, better luck next time!
-		return $response;
+	if($production){
+		$response = checkToken($request, $response);
+    
+    	if($response->getStatusCode() != 200){
+			// Sorry, better luck next time!
+			return $response;
+		}
 	}
-	*/
 
 	// if we're still here it means that the token was provided and valid
 	$input = null;
@@ -162,20 +161,19 @@ $app->post('/register', function($request, $response) {
 	if($usedSlots == ""){
 		$usedSlots = 0;
 	}
-        
+	
 	// calculate the remaining slots
 	$remainingSlots = $totalSlots - $usedSlots;
+	$enoughSlotsAvailable = $slots <= $remainingSlots;
 	
     // if the user requests too many slots
-    if($slots > $remainingSlots && !$waitList){
+    if(!$enoughSlotsAvailable && !$waitList){
     	$response = $response->withStatus(409);
 		$response = $response->withHeader('Content-type', 'application/json');
         $responseBodyNotEnoughSlotsAvailable = array('not_enough_slots_available' => $remainingSlots);
         $response->write(json_encode($responseBodyNotEnoughSlotsAvailable));
         return $response;
     }
-    
-    
     
     // w00t, everything looks ready, time to save the registration!
     
@@ -208,17 +206,61 @@ $app->post('/register', function($request, $response) {
     }
 	
 	// registration saved successfully
+	// we can now close the database connection
+    $dbConnection->close();
+	
+	
 	
 	// now we generate the confirmation e-mail
-	$response->write("Registration saved!");
-	// todo retrieve uuid to generate confirmation e-mail's link
 	
-	
-	
+	// first, we generate the confirmation link using the UUID we generated earlier
+	// that's the link that the user will have to click upon to confirm his registration
+	$baseURL = getBaseURL();
+	$confirmRegistrationRoutePath = $this->router->pathFor("confirm_registration", [
+    	"uuid" => $uuid
+    ]);	
+    $confirmRegistrationURL = $baseURL . $confirmRegistrationRoutePath;
     
-    // close the connection
-    $dbConnection->close();
     
+	// load mail configuration
+    // adapt the path depending on where the file is located
+    $emailConfiguration = parse_ini_file("../mail-configuration.ini");
+    
+    $emailFrom = $emailConfiguration["from"];
+    $emailFromName = $emailConfiguration["fromName"];
+    $emailTo = $email;
+    $emailSubject = $emailConfiguration["templateSubjectRegistration"];
+    $emailMessage = $emailConfiguration["templateMessageRegistration"];
+    
+    // now we update the mail message with the actual link (i.e., interpolate the template values)
+    $emailMessage = str_replace("%%LIEN%%", $confirmRegistrationURL, $emailMessage);
+    $emailMessage = str_replace("%%IDENTIFIANT%%", $uuid, $emailMessage);
+
+    // finally, we can send the mail
+    $emailSentSuccessfully = sendHTMLEmail($emailFromName, $emailFrom, $emailTo, $emailSubject, $emailMessage);
+    
+    if(!$emailSentSuccessfully){
+    	throw new Exception("There was an error sending the registration confirmation e-mail");
+    }
+    
+    // the mail was sent successfully
+    
+    // preparing the final HTTP response (success)
+    // will be used by the front-end to display the results
+    $retVal = array(
+    	"uuid" => $uuid,
+    	"firstName" => $firstName,
+    	"lastName" => $lastName,
+    	"email" => $email,
+    	"phone" => $phone,
+    	"slots" => $slots,
+    	"member" => $member,
+    	"waitList" => $waitList
+    );
+	
+    $response = $response->withHeader('Content-type', 'application/json');
+    $response->write(json_encode($retVal));
+	
 	return $response;
 })->setName("register");
 
