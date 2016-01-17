@@ -4,7 +4,7 @@
   * Required parameters
     * uuid: user's uuid
   * Responses
-    * ...
+    * 400: uuid not provided
 * /email_check GET
   * Required parameters
     * Required HTTP Header: `X_Authorization: Bearer <token>`
@@ -40,8 +40,16 @@ Pre-requisites:
 
 Steps:
 When the back-end receives a registration confirmation request (confirm_registration call)
-* validates the provided parameters
-* sanitizes the provided parameters
+* ensures that the required uuid parameter has been provided
+  * if not: error 400
+* validates the provided parameter (uuid)
+* sanitizes the provided parameter (uuid)
+
+
+
+TODO continue
+
+
 * checks if a registration with that uuid exists
   * if not, return 4xx
 * checks if already confirmed

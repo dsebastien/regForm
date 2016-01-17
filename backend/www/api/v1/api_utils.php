@@ -106,6 +106,7 @@ function ensureThatKeyExists($key, $array){
 }
 
 // Throws an exception if the provided value is undefined, null or empty
+// Returns a trimmed version of the given value
 function ensureNotEmpty($value){
 	if($value === null || trim($value) === ""){
 		throw new Exception("Unset, null or empty value: " .$value);
@@ -120,6 +121,25 @@ function ensureIsEmail($value){
 		throw new Exception("The value is not a valid e-mail: ".$value);
 	}
     return $value;
+}
+
+function ensureIsUUID($value){
+	if($value === null || trim($value) === ""){
+		throw new Exception("The value is null or empty!");
+	}
+	
+	$trimmedValue = trim($value);
+	$uuidInstance = null;
+	try{
+		$uuidInstance = Uuid::fromString($trimmedValue);
+	}catch(Exception $e){
+		throw new Exception("Failed to convert the value to a UUID: ".$value);
+	}
+	if($uuidInstance === null || $uuidInstance->toString() !== $trimmedValue){
+		throw new Exception("The provided value is not a valid uuid: ".$value);
+	}
+	
+	return $trimmedValue;
 }
 
 // Sends an e-mail (text or html) using the provided information
