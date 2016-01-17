@@ -10,12 +10,32 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 ///////////////////////////////////////////////////////////////////
 // FUNCTIONS
 ///////////////////////////////////////////////////////////////////
+
+// Generates a version 4 (random) UUID object
+function generateUUID(){
+	return Uuid::uuid4()->toString(); // i.e. 25769c6c-d34d-4bfe-ba98-e0ee856f3e7a
+}
+
+// Returns the current client's IP address
+function getClientIP(){
+	return $_SERVER['REMOTE_ADDR'];
+}
+
+// converts a boolean to an int
+function convertBooleanToInt($value){
+	if($value === null || !is_bool($value)){
+		throw new Exception("The provided value is not a boolean!");
+	}
+	return $value? 1 : 0;
+}
+
+
+// Ensures that the provided request contains a valid JWT token
+// passed through the Authorization header in the form: X_Authorization Bearer <token>
 $httpHeaderPrefix = "HTTP_";
 $authorizationHeaderName = "X_Authorization"; // modified because my Web host removes the default/standard "Authorization" header !
 $authorizationHeader = $httpHeaderPrefix . $authorizationHeaderName;
 
-// Ensures that the provided request contains a valid JWT token
-// passed through the Authorization header in the form: X_Authorization Bearer <token>
 function checkToken($request, $response){
 	global $authorizationHeader; // let's go global (err crazy)
 
@@ -59,7 +79,7 @@ function checkToken($request, $response){
     	}
     	
     	// validate that the client IP stored in the token is the same as the current client IP
-    	$currentClientIP = $_SERVER['REMOTE_ADDR'];
+    	$currentClientIP = getClientIP();
     	if($decoded_array["clientIPAddress"] !== $currentClientIP){
     		throw new Exception("The current client IP is not the same as the original client IP that requested the token");
     	}
@@ -94,8 +114,6 @@ function ensureIsEmail($value){
 	}
     return $value;
 }
-
-// FIXME implement UUID generation function
 
 
 // send confirmation mail
