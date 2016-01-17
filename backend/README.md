@@ -146,23 +146,15 @@ When the back-end receives a subscription request (register call)
         	"not_enough_slots_available": "<remaining_slots>"
         }
 		```
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 * generates UUID for registration
 * saves registration details in database
   * confirmed == false at this point in DB
   * if error
-    * return 5xy
+    * return 500
+
+
+TODO
+
 * sends confirmation mail to the requester
   * see Registration confirmation mail section
 * returns 200 OK with registration id and registration details
@@ -183,6 +175,7 @@ Once the user clicks on the registration confirmation mail
   * if it exists
     * if it is already confirmed: do nothing
     * update the 'confirmed' field (set to true)
+    * update the 'on_wait_list' field (set to false)
   * if error
     * redirect to application error page
   * redirect to confirmation success page w/ registration details

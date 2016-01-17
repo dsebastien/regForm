@@ -99,11 +99,11 @@ $app->post('/register', function($request, $response) {
     	throw new Exception("Could not connect to the database. Error: ".$dbConnection->connect_error);
     }
     
-    $emailEscaped = $dbConnection->real_escape_string($email);
+    $escapedEmail = $dbConnection->real_escape_string($email);
     
     // check if the email is already known
     // FIXME eliminate duplication w/ route_email_check
-    $sql = "SELECT id FROM `foire_vetements` WHERE email = '$emailEscaped'";
+    $sql = "SELECT id FROM `foire_vetements` WHERE email = '$escapedEmail'";
     
     //http://localhost:8080/register
 	
@@ -133,7 +133,7 @@ $app->post('/register', function($request, $response) {
     $remainingSlots = 0;
     	
     // get total slots
-    $sql = 'SELECT total_slots FROM `foire_vetements_meta`';
+    $sql = "SELECT total_slots FROM `foire_vetements_meta`";
     	
     $result = null;
     if(!$result = $dbConnection->query($sql)){
@@ -146,7 +146,7 @@ $app->post('/register', function($request, $response) {
 	$result->free();
     	
 	// get used slots (i.e., slots reserved by people who have confirmed and are not on the wait list)
-	$sql = 'SELECT SUM(slots) FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0';
+	$sql = "SELECT SUM(slots) FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0";
     	
 	$result = null;
 	if(!$result = $dbConnection->query($sql)){
@@ -176,6 +176,45 @@ $app->post('/register', function($request, $response) {
     }
     
     
+    
+    // w00t, everything looks ready, time to save the registration!
+    
+    // We need a unique ID
+	$uuid = generateUUID();
+	
+	// Make sure that all input is correctly encoded/escaped before using them in a query
+	$escapedFirstName = $dbConnection->real_escape_string($firstName);
+	$escapedLastName = $dbConnection->real_escape_string($lastName);
+	$escapedPhone = $dbConnection->real_escape_string($phone);
+	//$escapedEmail (already defined above)
+	
+	// the other input values don't need escaping, we've checked them already (number & booleans)
+	// slots
+	// member
+	// waitList
+	
+	// member and waitList being booleans, they need to be converted to int values before insertion
+	$memberAsInteger = convertBooleanToInt($member);
+	$waitListAsInteger = convertBooleanToInt($waitList);
+	
+	// finally, we need the client's IP
+	$clientIP = getClientIP();
+	
+	$sql = "INSERT INTO `foire_vetements` (uuid, first_name, last_name, email, phone_number, slots, member, on_wait_list, created_on, client_ip) VALUES ('$uuid', '$escapedFirstName', '$escapedLastName','$escapedEmail', '$escapedPhone', $slots, $memberAsInteger, $waitListAsInteger, now(), '$clientIP')";
+	
+	$result = null;
+	if(!$result = $dbConnection->query($sql)){
+    	throw new Exception("There was an error running the query: ".$dbConnection->error);
+    }
+	
+	// registration saved successfully
+	
+	// now we generate the confirmation e-mail
+	$response->write("Registration saved!");
+	// todo retrieve uuid to generate confirmation e-mail's link
+	
+	
+	
     
     // close the connection
     $dbConnection->close();

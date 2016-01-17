@@ -9,11 +9,10 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 $app->get('/token', function($request, $response) {
 	// Get client's IP address
-	$clientIP = $_SERVER['REMOTE_ADDR'];
+	$clientIP = getClientIP();
 	
-	// Generate a version 4 (random) UUID object
 	// We need a unique ID
-	$uuid = Uuid::uuid4()->toString(); // i.e. 25769c6c-d34d-4bfe-ba98-e0ee856f3e7a
+	$uuid = generateUUID();
 	
 	// load token generation configuration
 	// adapt the path depending on where the file is located
