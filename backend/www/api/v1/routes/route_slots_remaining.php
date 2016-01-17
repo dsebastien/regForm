@@ -18,7 +18,7 @@ $app->get('/slots', function($request, $response) {
 	$remainingSlots = 0;
 	
 	// get total slots
-	$sql = 'SELECT total_slots FROM `foire_vetements_meta`';
+	$sql = "SELECT total_slots FROM `foire_vetements_meta`";
 	
 	$result = null;
 	if(!$result = $dbConnection->query($sql)){
@@ -31,7 +31,7 @@ $app->get('/slots', function($request, $response) {
     $result->free();
 	
 	// get used slots (i.e., slots reserved by people who have confirmed and are not on the wait list)
-	$sql = 'SELECT SUM(slots) FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0';
+	$sql = "SELECT SUM(slots) as 'sum' FROM `foire_vetements` WHERE confirmed = 1 AND on_wait_list = 0";
 	
 	$result = null;
 	if(!$result = $dbConnection->query($sql)){
@@ -39,7 +39,7 @@ $app->get('/slots', function($request, $response) {
 	}
 	
 	while($row = $result->fetch_assoc()){
-    	$usedSlots = $row[0];
+    	$usedSlots = $row["sum"];
     }
 	$result->free();
 	
@@ -47,7 +47,7 @@ $app->get('/slots', function($request, $response) {
 	$dbConnection->close();
 	
 	// make sure that we define a value
-	if($usedSlots == ""){
+	if($usedSlots === ""){
     	$usedSlots = 0;
     }
     
