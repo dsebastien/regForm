@@ -1,11 +1,22 @@
 <?php
 
+// General purpose utilities
+
 // reference: https://github.com/firebase/php-jwt
 use Firebase\JWT\JWT;
 
 // reference: https://github.com/ramsey/uuid
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+
+///////////////////////////////////////////////////////////////////
+// Configuration
+///////////////////////////////////////////////////////////////////
+
+// HTTP headers require special treatment with OVH
+$httpHeaderPrefix = "HTTP_";
+$authorizationHeaderName = "X_Authorization"; // modified because my Web host removes the default/standard "Authorization" header !
+$authorizationHeader = $httpHeaderPrefix . $authorizationHeaderName;
 
 ///////////////////////////////////////////////////////////////////
 // FUNCTIONS
@@ -32,10 +43,6 @@ function convertBooleanToInt($value){
 
 // Ensures that the provided request contains a valid JWT token
 // passed through the Authorization header in the form: X_Authorization Bearer <token>
-$httpHeaderPrefix = "HTTP_";
-$authorizationHeaderName = "X_Authorization"; // modified because my Web host removes the default/standard "Authorization" header !
-$authorizationHeader = $httpHeaderPrefix . $authorizationHeaderName;
-
 function checkToken($request, $response){
 	global $authorizationHeader; // let's go global (err crazy)
 

@@ -8,6 +8,7 @@ require "vendor/autoload.php";
 
 // Load utils
 require "api_utils.php";
+require "api_utils_database.php";
 
 // toggle for production
 $production = false;
@@ -43,6 +44,9 @@ if($production){
 	};
 }
 
+///////////////////////////////////////////////////////////////////
+// REST API Routes
+///////////////////////////////////////////////////////////////////
 $app->get('/', function($request, $response) {
 	$response->write("Foire aux vetements API");
 	return $response;
@@ -54,5 +58,7 @@ foreach(glob("routes/*.php") as $routeFile){
 }
 
 $app->run();
+
+ensureDatabaseConnectionIsClosed(); // make sure that any opened database connection is closed
 
 ?>
