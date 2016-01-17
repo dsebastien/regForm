@@ -3,6 +3,8 @@
 * /confirm_registration GET
   * Required parameters
     * uuid: user's uuid
+  * Responses
+    * ...
 * /email_check GET
   * Required parameters
     * Required HTTP Header: `X_Authorization: Bearer <token>`
