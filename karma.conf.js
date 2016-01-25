@@ -1,7 +1,7 @@
 // Karma configuration
 // reference: http://karma-runner.github.io/0.13/config/configuration-file.html
 
-module.exports = function (config) {
+module.exports = function(config){
 	config.set({
 
 		// base path that will be used to resolve all patterns (eg. files, exclude)
@@ -35,7 +35,7 @@ module.exports = function (config) {
 		// can be used to map paths served by the Karma web server to /base/ content
 		// knowing that /base corresponds to the project root folder (i.e., where this config file is located)
 		proxies: {
-			"/.tmp": "/base/.tmp" // without this, karma-jspm can't load the files
+			"/.tmp": "/base/.tmp" // without this, karma-systemjs can't load the files
 		},
 
 		// preprocess matching files before serving them to the browser
@@ -47,7 +47,7 @@ module.exports = function (config) {
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
 		// https://www.npmjs.com/package/karma-junit-reporter
 		// https://www.npmjs.com/package/karma-spec-reporter
-		reporters: ["spec"],
+		reporters: [ "spec" ],
 
 		// web server port
 		port: 9876,
@@ -102,7 +102,7 @@ module.exports = function (config) {
 				".tmp/**/!(*.spec).js" // make sure that all files are available
 			],
 
-			// SystemJS configuration specifically for tests, added after your config file. 
+			// SystemJS configuration specifically for tests, added after your config file.
 			// Good for adding test libraries and mock modules
 			paths: {}
 		}

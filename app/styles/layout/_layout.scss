@@ -66,3 +66,31 @@
   border-left: 5px solid #a94442;
 }
 */
+
+/* Fix for https://github.com/google/material-design-lite/issues/1558  */
+.mdl-checkbox {
+  height: 100%
+}
+
+// reCaptcha bug fix
+// reference: https://www.geekgoddess.com/how-to-resize-the-google-nocaptcha-recaptcha/
+div#captcha {
+  //display: inline;
+  display: block; //the most important
+}
+
+@media screen and (max-width: 575px) {
+  #rc-imageselect, .g-recaptcha, div#captcha {
+	transform: scale(0.77);
+	-webkit-transform: scale(0.77);
+	transform-origin: 0 0;
+	-webkit-transform-origin: 0 0;
+	text-align: center;
+	position: relative;
+	width: 100% !important;
+  }
+}
+
+#rc-imageselect{
+  max-width: 100%;
+}

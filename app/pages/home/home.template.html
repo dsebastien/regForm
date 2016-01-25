@@ -29,7 +29,7 @@
 		<!-- Phone -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
 			<input class="mdl-textfield__input" type="text" pattern="^[0-9]*$" id="phone" ngControl="phone" [(ngModel)]="model.phone" tabindex="4">
-			<label class="mdl-textfield__label" for="phone">Téléphone (optionnel)</label>
+			<label class="mdl-textfield__label" for="phone">Téléphone</label>
 		</div>
 		
 		<br />
@@ -64,13 +64,14 @@
 			<input type="checkbox" id="waitList" class="mdl-checkbox__input" ngControl="waitList" [(ngModel)]="model.waitList" tabindex="6">
 			<span class="mdl-checkbox__label">S'il n'y a pas assez de places libres, je souhaite être placé sur la liste d'attente</span>
 		</label>
-		
+		<br />
 		<hr />
 
 		<!-- Captcha -->
 		<div class="mdl-layout-spacer"></div>
 		<div class="mdl-layout__header-row">
 			<div class="mdl-layout-spacer"></div>
+			<br />
 			<!-- activated in the controller -->
 			<div id="captcha"></div>
 		</div>

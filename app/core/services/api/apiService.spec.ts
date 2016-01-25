@@ -4,7 +4,7 @@
 // https://github.com/typings/typings/issues/69
 // https://github.com/dsebastien/modernWebDevBuild/issues/76
 
-import {describe, it} from "jasmine";
+import {describe, it, expect} from "jasmine";
 
 describe("API Service", () => {
 	it("should", () => {

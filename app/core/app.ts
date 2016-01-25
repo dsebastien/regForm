@@ -18,6 +18,8 @@ import "rxjs/add/operator/map";
 // app components
 import {Home} from "../pages/home/home";
 import {Slots} from "../components/slots/slots";
+import {RegistrationConfirmation} from "../pages/registration-confirmation/registrationConfirmation";
+import {RegistrationFull} from "../pages/registration-full/registrationFull";
 
 @Component({
 	selector: "app",
@@ -26,7 +28,9 @@ import {Slots} from "../components/slots/slots";
 	providers: [ApiService]
 })
 @RouteConfig([
-	{path: "/", component: Home, as: "Home", data: undefined}
+	{path: "/", component: Home, as: "Home", data: undefined},
+	{path: "/registrationConfirmation", component: RegistrationConfirmation, as: "RegistrationConfirmation", data: undefined},
+	{path: "/registrationFull", component: RegistrationFull, as: "RegistrationFull", data: undefined}
 ])
 export class App {
 	private apiService:ApiService;
@@ -41,7 +45,7 @@ export class App {
 	constructor(apiService:ApiService) {
 		this.apiService = apiService;
 		console.log("Application bootstrapped!");
-		
+
 		const slotsObservable:Observable<SlotsDetails> = apiService.getSlots();
 		slotsObservable.subscribe((value:SlotsDetails) => {
 			console.log("Received slots details");

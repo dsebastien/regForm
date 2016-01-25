@@ -4,6 +4,8 @@ dist/
 *.log
 *.map
 
+app/**/*.js
+
 # Typings
 # Only project-specific typings should be included
 *.d.ts

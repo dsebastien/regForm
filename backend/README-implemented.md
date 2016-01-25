@@ -104,8 +104,12 @@ Here you find information about the API and how to interact with it, not the inn
           	"not_enough_slots_available": "<remaining_slots>"
           }
           ```
-
-
+* /confirm_registration GET
+  * Required parameters
+    * uuid: user's uuid
+  * Responses
+    * 400: uuid not provided or unknown or invalid
+    * 302: if registration confirmed, redirection towards the application
 
 
 # Specifications
@@ -189,11 +193,45 @@ When the back-end receives a registration request (register call)
 }
 ```
 
+## Registration confirmation by end user
+Pre-requisites:
+* the user has clicked on the registration confirmation link in the mail he received
+
+Steps:
+When the back-end receives a registration confirmation request (confirm_registration call)
+* ensures that the required uuid parameter has been provided
+  * if not: error 400
+* validates the provided parameter (uuid)
+* sanitizes the provided parameter (uuid)
+* checks if a registration with that uuid exists
+  * if not, return 4xx
+* checks if already confirmed
+  * if so, redirect to confirmation page in the app: http://.../#/confirmRegistration
+* update the 'confirmed' field (set to true)
+* calculate available slots
+* if enough slots available for the user
+  * update the 'on_wait_list' field (set to false)
+  * send registration confirmation mail
+  * redirect to confirmation success page
+* if not enough slots available
+  * send registration confirmation mail => full
+    * will receive another mail if/when slots free up for him
+  * redirect to confirmation FULL page
+* if error
+  * redirect to application error page
+
+
 ## E-mails
 ### Registration confirmation request
 * goal: ensure correct e-mail/person
 * a link that the user must click on to confirm his registration
   * link to /confirm_registration API call
+
+### Registration confirmation
+* goal: confirm the registration to the user
+* contains
+  * details about the reservation (firstname, lastname, slots reserved)
+  * different message whether enough slots or not (confirmed or full message)
 
 
 # Installation & Configuration

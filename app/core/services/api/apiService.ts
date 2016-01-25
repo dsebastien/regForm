@@ -155,7 +155,7 @@ export class ApiService {
 			});
 		return retVal;
 	}
-	
+
 	public register():any {
 		console.log("Not implemented yet");
 		//TODO implemented (set correct return type) 

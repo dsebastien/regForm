@@ -1,10 +1,5 @@
 # Yet to be implemented
 
-* /confirm_registration GET
-  * Required parameters
-    * uuid: user's uuid
-  * Responses
-    * 400: uuid not provided
 * /email_check GET
   * Required parameters
     * Required HTTP Header: `X_Authorization: Bearer <token>`
@@ -34,37 +29,6 @@
 
 # Specifications
 
-## Registration confirmation by end user
-Pre-requisites:
-* the user has clicked on the registration confirmation link in the mail he received
-
-Steps:
-When the back-end receives a registration confirmation request (confirm_registration call)
-* ensures that the required uuid parameter has been provided
-  * if not: error 400
-* validates the provided parameter (uuid)
-* sanitizes the provided parameter (uuid)
-
-
-
-TODO continue
-
-
-* checks if a registration with that uuid exists
-  * if not, return 4xx
-* checks if already confirmed
-  * if so, redirect to confirmation page in the app
-* calculate available slots
-* if enough slots available for the user
-  * update the 'confirmed' field (set to true)
-  * update the 'on_wait_list' field (set to false)
-  * send registration confirmation mail
-  * redirect to confirmation success page w/ registration details  
-* if not enough slots available
-  * send registration confirmation mail => user on wait list!
-    * will receive another mail if/when slots free up for him
-* if error
-  * redirect to application error page
 
 ## Registration form
 Pre-requisites:
@@ -73,7 +37,12 @@ Pre-requisites:
 Steps:
 The user fills-in the form
 * provide details (firstname, lastname, ...)
-* choose number of slots  
+* choose number of slots
+
+
+
+TODO continue here
+
 
 The user submits the form
 * the application checks if there are enough remaining slots (API call)
@@ -159,11 +128,3 @@ Steps:
   	"email_unknown": "..."
   }
   ```
-
-## E-mails
-
-### Registration confirmation
-* goal: confirm the registration to the user
-* contains
-  * details about the reservation (firstname, lastname, mail, phone, slots reserved, ...)
-  * different message whether on wait list or not

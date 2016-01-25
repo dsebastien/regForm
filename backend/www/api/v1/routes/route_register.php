@@ -97,8 +97,6 @@ $app->post('/register', function($request, $response) {
     // check if the email is already known
     // FIXME eliminate duplication w/ route_email_check
     $sql = "SELECT id FROM `foire_vetements` WHERE email = '$escapedEmail'";
-    
-    //http://localhost:8080/register
 	
     $result = null;
     if(!$result = $dbConnection->query($sql)){

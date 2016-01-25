@@ -6,12 +6,12 @@ import {TokenDetails, Token} from "./tokenDetails";
  */
 export class TokenConverter<TokenDetailsType> {
 
-	constructor(){
+	constructor() {
 		// constructor
 	}
 
 	fromTokenToJSON(token:TokenDetails<TokenDetailsType>) {
-		if(token === null || token === undefined){
+		if(token === null || token === undefined) {
 			// TODO use
 			//throw new IllegalArgumentException("The token cannot be null or undefined!");
 
