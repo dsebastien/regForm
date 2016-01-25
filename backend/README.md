@@ -43,6 +43,8 @@ The user fills-in the form
 
 TODO continue here
 
+* if there is less than 20% of the slots available, the user can choose to be added to the wait list
+
 
 The user submits the form
 * the application checks if there are enough remaining slots (API call)

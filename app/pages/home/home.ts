@@ -12,6 +12,13 @@ import {RegistrationDetailsModel} from "./registrationDetails.model";
 // reference: https://developers.google.com/recaptcha/intro
 declare var grecaptcha:any;
 
+// import RxJS
+import {Observable, Subject} from "rxjs";
+import "rxjs/add/operator/map";
+
+import {ApiService} from "../../core/services/api/apiService";
+import {SlotsDetails} from "../../core/services/api/slotsDetails";
+
 @Component({
 	selector: "page-home",
 	templateUrl: "pages/home/home.template.html",
@@ -23,7 +30,24 @@ export class Home implements AfterViewInit {
 	private captchaCompleted:boolean = false;
 	private captchaResponse:string = "";
 
-	constructor() {
+	private apiService:ApiService;
+
+	// information about the slots
+	private slots: SlotsDetails;
+
+	constructor(apiService:ApiService) {
+		this.apiService = apiService;
+
+		const slotsObservable:Observable<SlotsDetails> = apiService.getSlots();
+		slotsObservable.subscribe((value:SlotsDetails) => {
+			console.log("Received slots details");
+			this.slots = value;
+		}, (error) => {
+			console.log("Could not get the slots details: ", error);
+		}, () => {
+			console.log("Slots details loaded");
+		});
+
 		console.log("Home page loaded");
 	}
 

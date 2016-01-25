@@ -1,4 +1,3 @@
-import {SlotsDetails} from "./services/api/slotsDetails";
 "use strict";
 
 import {ApiService} from "./services/api/apiService";
@@ -18,6 +17,7 @@ import "rxjs/add/operator/map";
 // app components
 import {Home} from "../pages/home/home";
 import {Slots} from "../components/slots/slots";
+import {SlotsDetails} from "./services/api/slotsDetails";
 import {RegistrationConfirmation} from "../pages/registration-confirmation/registrationConfirmation";
 import {RegistrationFull} from "../pages/registration-full/registrationFull";
 
