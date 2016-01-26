@@ -1,6 +1,7 @@
 "use strict";
 
 export class RegistrationDetailsModel {
+	uuid:string = "";
 	firstName:string = "";
 	lastName:string = "";
 	email:string = "";

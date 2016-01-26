@@ -44,18 +44,7 @@ The user fills-in the form
     * because in that case it's more probably there won't be slots left once they confirm their e-mail
 
 The user submits the form
-
-
-TODO implement
-
-
-* the application checks if there are enough remaining slots (API call)
-  * if not, the application warns the user
-    * if the user has chosen to be added to the waiting list
-      * the request is sent
-    * if the user has chosen not to be added to the waiting list
-      * an information message is displayed: "no slots available but you can request to be added to the wait list"
-  * if yes, the request is sent as JSON
+* if the user has chosen to be added to the waiting list
 * the application passes the token along when it sends requests: X_Authorization: Bearer <token>
 
 Example requests:

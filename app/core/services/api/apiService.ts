@@ -22,6 +22,7 @@ import {TokenDetails, Token} from "./tokenDetails";
 import {TokenConverter} from "./tokenConverter";
 import {SlotsDetails} from "./slotsDetails";
 import {RegistrationDetailsModel} from "./registrationDetails.model";
+import {RegistrationResult, RegistrationResultState} from "./registrationResult";
 
 /*
  * Service responsible for requesting/checking tokens.
@@ -146,6 +147,7 @@ export class ApiService {
 		const retVal:Subject<SlotsDetails> = new Subject<SlotsDetails>();
 		this.http.get(Configuration.slotsEndpoint)
 			//TODO implement.retry(3)
+			//TODO do the mapping in .map and return that observable directly instead of wrapping
 			.map((res:Response) => res.json())
 			.subscribe(slotsAsJSON => {
 				console.log(slotsAsJSON);
@@ -158,8 +160,8 @@ export class ApiService {
 		return retVal;
 	}
 
-	public register(registrationDetails:RegistrationDetailsModel):any {
-		this.checkToken(); // TODO check if works as expected
+	public register(registrationDetails:RegistrationDetailsModel):Observable<RegistrationResult> {
+		this.checkToken();
 
 		const authenticationHeaders:Headers = this.getAuthenticatedRequestHeaders();
 		const requestOptions:any = {
@@ -176,24 +178,53 @@ export class ApiService {
 		};
 		console.log("Sending the following registration: ", body);
 
-		this.http.post(Configuration.registrationEndpoint, JSON.stringify(body), requestOptions)
+		return this.http.post(Configuration.registrationEndpoint, JSON.stringify(body), requestOptions)
 			.map((res:Response) => {
+				let registrationResult: RegistrationResult = null;
+				let registrationDetails: RegistrationDetailsModel = new RegistrationDetailsModel();
+				let registrationResultState: RegistrationResultState = null;
+
 				if (res.status === 200) {
-					return res.json();
+					let jsonResult = null;
+					try {
+						jsonResult = res.json();
+						registrationDetails.uuid = jsonResult.uuid;
+						registrationDetails.firstName = jsonResult.firstName;
+						registrationDetails.lastName = jsonResult.lastName;
+						registrationDetails.email = jsonResult.email;
+						registrationDetails.phone = jsonResult.phone;
+						registrationDetails.slots = jsonResult.slots;
+						registrationDetails.member = jsonResult.member;
+						registrationDetails.waitList = jsonResult.waitList;
+					} catch(e:Error) {
+						registrationResultState = RegistrationResultState.FAILED;
+					}
+					registrationResult = new RegistrationResult(registrationResult, registrationDetails);
+				}else if (res.status === 400 || 401 || 403) {
+					// 400: bad request
+					// 401: unauthorized (no token)
+					// 403: forbidden (token invalid, outdated, ...)
+					registrationResultState = RegistrationResultState.FAILED;
+				}else if (res.status === 409) {
+					// 409: mail already registered
+					//		{ "email_already_registered": "<email>" } 
+					// 409: not enough slots available. Body of the response:
+					//		{ "not_enough_slots_available": "<remaining_slots>" }
+					
+					//TODO get json key: email_already_registered or not_enough_slots_available
+					// depending on which one, adapt result
+					
+					//registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
+					// mail already registered
+				}else{
+					//FIXME fail: unknown state
 				}
 
-				// FIXME handle all errors
-				throw new Error("Error: "+res.status);
-				//	* 401: unauthorized (no token)
-				//	* 403: forbidden (token, invalid, outdated, ...)
-				//	* 400: bad request (invalid input)
-				//	* 409: mail already registered. Body of the response:
-				//		{ "email_already_registered": "<email>" } 
-				//	* 409: not enough slots available. Body of the response:
-				//		{ "not_enough_slots_available": "<remaining_slots>" }
+				
+				return registrationResult;
 			})
 			.subscribe(
-				(data:any) => {
+				(data:Registration) => {
 					//FIXME implement
 					console.log("Data: ", data);
 				},
