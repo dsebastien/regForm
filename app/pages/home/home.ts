@@ -30,10 +30,10 @@ export class Home implements AfterViewInit {
 	private captchaCompleted:boolean = false;
 	private captchaResponse:string = "";
 
-	private apiService:ApiService;
+	private captchaWidgetId:any;
 
-	// information about the slots
-	private slots: SlotsDetails;
+	private apiService:ApiService;
+	private slots:SlotsDetails;
 
 	constructor(apiService:ApiService) {
 		this.apiService = apiService;
@@ -57,11 +57,16 @@ export class Home implements AfterViewInit {
 	 */
 	ngAfterViewInit() {
 		// reference: https://developers.google.com/recaptcha/intro
-		grecaptcha.render("captcha", {
+		this.captchaWidgetId = grecaptcha.render("captcha", {
 			"sitekey" : "6LcJrRQTAAAAAK_cw8EkdLatCK9pGGKcDDPKnq-q",
 			"callback" : this.captchaCallback,
 			"theme" : "light"
 		});
+	}
+
+	public static resetCaptcha(widgetId:any): void {
+		// reset the captcha
+		grecaptcha.reset(widgetId);
 	}
 
 	public captchaCallback = (response:any) => {
@@ -80,14 +85,14 @@ export class Home implements AfterViewInit {
 			// todo reset captcha (?) / display error?
 			return;
 		}
-		
+
 		this.apiService.register(this.model);
 
 		// todo handle service call result
 		//TODO implement
 		// avoid multiple form submissions
 		this.model = new RegistrationDetailsModel();
-		// FIXME reset the captcha too
+		Home.resetCaptcha(this.captchaWidgetId);
 		// TODO get the result and redirect the user if needed 
 	}
 
@@ -95,17 +100,17 @@ export class Home implements AfterViewInit {
 	setSlots(slots:number) {
 		this.model.slots = slots;
 	}
-	
+
 	shouldDisplayWaitListChoice(): boolean {
 		let retVal:boolean = false;
-		
-		if(this.slots !== null && this.slots !== undefined){
+
+		if(this.slots !== null && this.slots !== undefined) {
 			const percentageUsed = (this.slots.used / this.slots.total) * 100;
-			if(percentageUsed >= 90 || this.slots.remaining <= 10){
+			if(percentageUsed >= 90 || this.slots.remaining <= 10) {
 				retVal = true;
 			}
 		}
-		
+
 		return retVal;
 	}
 }

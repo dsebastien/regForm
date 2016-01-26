@@ -137,8 +137,7 @@ export class ApiService {
 	private getAuthenticatedRequestHeaders():Headers {
 		let retVal:Headers = new Headers();
 		retVal.append(Configuration.authorizationHeaderPrefix + Configuration.authorizationHeaderName, Configuration.authorizationValuePrefix + this.currentTokenDetails.token);
-		//retVal.append('Content-Type', 'application/x-www-form-urlencoded');
-		retVal.append('Content-Type', 'application/json');
+		retVal.append("Content-Type", "application/json");
 
 		return retVal;
 	}
@@ -176,13 +175,13 @@ export class ApiService {
 			"waitList": registrationDetails.waitList
 		};
 		console.log("Sending the following registration: ", body);
-		
+
 		this.http.post(Configuration.registrationEndpoint, JSON.stringify(body), requestOptions)
 			.map((res:Response) => {
 				if (res.status === 200) {
 					return res.json();
 				}
-				
+
 				// FIXME handle all errors
 				throw new Error("Error: "+res.status);
 				//	* 401: unauthorized (no token)
@@ -196,14 +195,14 @@ export class ApiService {
 			.subscribe(
 				(data:any) => {
 					//FIXME implement
-					console.log("Data: ", data)
+					console.log("Data: ", data);
 				},
 				(err:any) => {
 					//FIXME implement
 					console.log("Error: ", err);
 				}
 			);
-		
+
 		//TODO set correct return type 
 	}
 }
