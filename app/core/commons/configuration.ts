@@ -11,5 +11,5 @@ export class Configuration {
 	public static registrationEndpoint = Configuration.apiURL + "/register";
 	public static authorizationHeaderPrefix = "HTTP_"; // necessary for my web host as all headers passed by clients are prefixed
 	public static authorizationHeaderName = "X_Authorization"; // necessary for my web host as the default/standard "Authorization" never reaches my back-end API. Also, '-' are changed to '_' meaning that I can't even prefix that correctly...
-	public static authorizationHeaderPrevix = "Bearer "; // the token should be added right after that
+	public static authorizationValuePrefix = "Bearer "; // the token should be added right after that
 }

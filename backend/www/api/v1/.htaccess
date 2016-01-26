@@ -11,6 +11,7 @@ Header always set X-Frame-Options "SAMEORIGIN"
 Header always set X-Xss-Protection "1; mode=block"
 Header always set X-Content-Type-Options "nosniff"
 Header always set Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT,PATCH"
+Header always set Access-Control-Allow-Headers: "HTTP_X_Authorization,Authorization,Content-Type"
 Header always set Access-Control-Allow-Origin "*"
 </IfModule>
 

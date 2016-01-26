@@ -6,7 +6,7 @@ import {NgForm, FORM_DIRECTIVES} from "angular2/common";
 
 import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerMaterialDesignLiteElement";
 
-import {RegistrationDetailsModel} from "./registrationDetails.model";
+import {RegistrationDetailsModel} from "../../core/services/api/registrationDetails.model";
 
 // Google's reCaptcha
 // reference: https://developers.google.com/recaptcha/intro
@@ -80,23 +80,32 @@ export class Home implements AfterViewInit {
 			// todo reset captcha (?) / display error?
 			return;
 		}
+		
+		this.apiService.register(this.model);
 
-		console.log("Saving: ", {
-			firstName: this.model.firstName,
-			lastName: this.model.lastName,
-			email: this.model.email,
-			phone: this.model.phone,
-			slots: this.model.slots,
-			member: this.model.member,
-			waitList: this.model.waitList
-		});
+		// todo handle service call result
 		//TODO implement
-		//TODO test print(this.model);
-		//FIXME avoid multiple form submissions!
+		// avoid multiple form submissions
+		this.model = new RegistrationDetailsModel();
+		// FIXME reset the captcha too
+		// TODO get the result and redirect the user if needed 
 	}
 
 	// TODO remove this workarond when we know how to handle radio button groups with ngForm ngModel ...
 	setSlots(slots:number) {
 		this.model.slots = slots;
+	}
+	
+	shouldDisplayWaitListChoice(): boolean {
+		let retVal:boolean = false;
+		
+		if(this.slots !== null && this.slots !== undefined){
+			const percentageUsed = (this.slots.used / this.slots.total) * 100;
+			if(percentageUsed >= 90 || this.slots.remaining <= 10){
+				retVal = true;
+			}
+		}
+		
+		return retVal;
 	}
 }

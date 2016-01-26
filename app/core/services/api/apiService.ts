@@ -6,7 +6,7 @@
 
 // import Angular 2
 import {Injectable} from "angular2/core";
-import {Http, Response, RequestMethod, RequestOptions} from "angular2/http";
+import {Http, Headers, Response, RequestMethod, RequestOptions} from "angular2/http";
 
 // import RxJS
 import {Observable, Subject} from "rxjs";
@@ -21,6 +21,7 @@ import {Configuration} from "../../commons/configuration";
 import {TokenDetails, Token} from "./tokenDetails";
 import {TokenConverter} from "./tokenConverter";
 import {SlotsDetails} from "./slotsDetails";
+import {RegistrationDetailsModel} from "./registrationDetails.model";
 
 /*
  * Service responsible for requesting/checking tokens.
@@ -30,7 +31,7 @@ import {SlotsDetails} from "./slotsDetails";
 export class ApiService {
 	private http:Http;
 	private static LOCALSTORAGE_TOKEN_VARIABLE:string = "id_token";
-	private currentTokenDetails:TokenDetails<string>;
+	private currentTokenDetails:TokenDetails<string> = null;
 	private tokenConverter:TokenConverter<string> = new TokenConverter<string>();
 
 	constructor(http:Http) {
@@ -41,21 +42,30 @@ export class ApiService {
 			throw new Error("The HTTP service has not been provided but is mandatory!");
 		}
 
-		this.initialize(); // after this point, a token should be available
+		this.checkToken(); // after this point, a token should be available
 	}
 
-	private initialize() {
+	private checkToken() {
 		let newTokenRequired:boolean = false;
 
+		if (this.currentTokenDetails !== undefined && this.currentTokenDetails !== null) {
+			if (!ApiService.isTokenStillValid(this.currentTokenDetails)) {
+				this.saveNewToken();
+			}
+			return;
+		}
+
+		// if there is no token yet
 		const currentTokenObservable:Observable<string> = ApiService.getCurrentToken();
 		currentTokenObservable.subscribe((value:Token<string>) => {
 			if (value !== null) {
 				const tokenDetails:TokenDetails<string> = this.tokenConverter.fromJSONToToken(value);
 				console.log("Token loaded: ", tokenDetails);
-				if (this.isTokenStillValid(tokenDetails) === false) {
+				if (ApiService.isTokenStillValid(tokenDetails) === false) {
 					newTokenRequired = true;
 				} else {
 					console.log("No need to request a new token");
+					this.currentTokenDetails = tokenDetails;
 				}
 			} else {
 				console.log("No token available in LocalStorage");
@@ -99,7 +109,7 @@ export class ApiService {
 		const lastTokenRequestTime = Date.now();
 		this.http.get(Configuration.tokenGenerationEndpoint)
 			//TODO implement.retry(3)
-			.map(res => res.json())
+			.map((res:Response) => res.json())
 			.subscribe(tokenAsJSON => {
 				const token = tokenAsJSON.token;
 				const expirationTime = lastTokenRequestTime + (tokenAsJSON.expiresIn * 1000); // seconds to milliseconds
@@ -111,16 +121,7 @@ export class ApiService {
 		return retVal;
 	}
 
-	private checkCurrentToken():void {
-		console.log("Checking current token");
-		if (this.currentTokenDetails !== null && this.currentTokenDetails !== undefined) {
-			if (this.isTokenStillValid(this.currentTokenDetails) === false) {
-				this.saveNewToken();
-			}
-		}
-	}
-
-	private isTokenStillValid(token:TokenDetails<string>):boolean {
+	private static isTokenStillValid(token:TokenDetails<string>):boolean {
 		let retVal:boolean = false;
 		if (token !== null && token !== undefined) {
 			retVal = Date.now() < token.expirationTime;
@@ -133,18 +134,20 @@ export class ApiService {
 		return retVal;
 	}
 
-	private prepareProtectedRequest() {
-		//FIXME implement
-		// prepare Http request
-		// add X_Authorization: Bearer <token>
-		// return the configured request object
+	private getAuthenticatedRequestHeaders():Headers {
+		let retVal:Headers = new Headers();
+		retVal.append(Configuration.authorizationHeaderPrefix + Configuration.authorizationHeaderName, Configuration.authorizationValuePrefix + this.currentTokenDetails.token);
+		//retVal.append('Content-Type', 'application/x-www-form-urlencoded');
+		retVal.append('Content-Type', 'application/json');
+
+		return retVal;
 	}
 
 	public getSlots():Observable<SlotsDetails> {
 		const retVal:Subject<SlotsDetails> = new Subject<SlotsDetails>();
 		this.http.get(Configuration.slotsEndpoint)
 			//TODO implement.retry(3)
-			.map(res => res.json())
+			.map((res:Response) => res.json())
 			.subscribe(slotsAsJSON => {
 				console.log(slotsAsJSON);
 				let slotsDetails = new SlotsDetails(slotsAsJSON.totalSlots, slotsAsJSON.usedSlots, slotsAsJSON.remainingSlots);
@@ -156,8 +159,51 @@ export class ApiService {
 		return retVal;
 	}
 
-	public register():any {
-		console.log("Not implemented yet");
-		//TODO implemented (set correct return type) 
+	public register(registrationDetails:RegistrationDetailsModel):any {
+		this.checkToken(); // TODO check if works as expected
+
+		const authenticationHeaders:Headers = this.getAuthenticatedRequestHeaders();
+		const requestOptions:any = {
+			headers: authenticationHeaders
+		};
+		const body = {
+			"firstName": registrationDetails.firstName,
+			"lastName": registrationDetails.lastName,
+			"email": registrationDetails.email,
+			"phone": registrationDetails.phone,
+			"slots": registrationDetails.slots,
+			"member": registrationDetails.member,
+			"waitList": registrationDetails.waitList
+		};
+		console.log("Sending the following registration: ", body);
+		
+		this.http.post(Configuration.registrationEndpoint, JSON.stringify(body), requestOptions)
+			.map((res:Response) => {
+				if (res.status === 200) {
+					return res.json();
+				}
+				
+				// FIXME handle all errors
+				throw new Error("Error: "+res.status);
+				//	* 401: unauthorized (no token)
+				//	* 403: forbidden (token, invalid, outdated, ...)
+				//	* 400: bad request (invalid input)
+				//	* 409: mail already registered. Body of the response:
+				//		{ "email_already_registered": "<email>" } 
+				//	* 409: not enough slots available. Body of the response:
+				//		{ "not_enough_slots_available": "<remaining_slots>" }
+			})
+			.subscribe(
+				(data:any) => {
+					//FIXME implement
+					console.log("Data: ", data)
+				},
+				(err:any) => {
+					//FIXME implement
+					console.log("Error: ", err);
+				}
+			);
+		
+		//TODO set correct return type 
 	}
 }

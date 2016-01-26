@@ -38,15 +38,17 @@ Steps:
 The user fills-in the form
 * provide details (firstname, lastname, ...)
 * choose number of slots
-
-
-
-TODO continue here
-
-* if there is less than 20% of the slots available, the user can choose to be added to the wait list
-
+* choose if he wishes to be put on the wait list
+  * by default it is FALSE
+  * the user is only given a choice if there is >=90% of slots used OR <=10 left
+    * because in that case it's more probably there won't be slots left once they confirm their e-mail
 
 The user submits the form
+
+
+TODO implement
+
+
 * the application checks if there are enough remaining slots (API call)
   * if not, the application warns the user
     * if the user has chosen to be added to the waiting list
@@ -96,6 +98,8 @@ Once the application receives the response
   * if confirmation page
     * display registration details
     * explain that they should check their mailbox
+
+The form should be fully reset: form fields & captcha
 
 
 ## E-mail available (/email_check)
