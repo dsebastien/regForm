@@ -29,7 +29,6 @@
 
 # Specifications
 
-
 ## Registration form
 Pre-requisites:
 * the application has requested & received a token

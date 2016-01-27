@@ -85,15 +85,25 @@ export class Home implements AfterViewInit {
 			// todo reset captcha (?) / display error?
 			return;
 		}
+		
+		// FIXME avoid multiple form submissions
 
-		this.apiService.register(this.model);
-
-		// todo handle service call result
-		//TODO implement
-		// avoid multiple form submissions
-		this.model = new RegistrationDetailsModel();
-		Home.resetCaptcha(this.captchaWidgetId);
-		// TODO get the result and redirect the user if needed 
+		const registrationResultObservable:Observable<RegistrationResult> = this.apiService.register(this.model);
+		registrationResultObservable.subscribe(
+			(registrationResult:RegistrationResult) => {
+				console.log("Registration result: ",registrationResult);
+				// TODO get the result and redirect the user if needed 
+			},
+			(error:any) => {
+				console.log("Error ",error);
+			},
+			() => {
+				console.log("Completed!");
+				this.model = new RegistrationDetailsModel();
+				Home.resetCaptcha(this.captchaWidgetId);
+			}
+		)
+		
 	}
 
 	// TODO remove this workarond when we know how to handle radio button groups with ngForm ngModel ...

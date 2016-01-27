@@ -135,12 +135,14 @@ export class ApiService {
 		return retVal;
 	}
 
-	private getAuthenticatedRequestHeaders():Headers {
-		let retVal:Headers = new Headers();
-		retVal.append(Configuration.authorizationHeaderPrefix + Configuration.authorizationHeaderName, Configuration.authorizationValuePrefix + this.currentTokenDetails.token);
-		retVal.append("Content-Type", "application/json");
+	private getAuthenticatedRequestOptions():any {
+		const httpHeaders:Headers = new Headers();
+		httpHeaders.append(Configuration.authorizationHeaderPrefix + Configuration.authorizationHeaderName, Configuration.authorizationValuePrefix + this.currentTokenDetails.token);
+		httpHeaders.append("Content-Type", "application/json");
 
-		return retVal;
+		return {
+			headers: httpHeaders
+		};
 	}
 
 	public getSlots():Observable<SlotsDetails> {
@@ -162,12 +164,13 @@ export class ApiService {
 
 	public register(registrationDetails:RegistrationDetailsModel):Observable<RegistrationResult> {
 		this.checkToken();
-
-		const authenticationHeaders:Headers = this.getAuthenticatedRequestHeaders();
-		const requestOptions:any = {
-			headers: authenticationHeaders
-		};
-		const body = {
+		
+		// FIXME implement and return separate observable; see https://github.com/angular/angular/issues/6490
+		// const retVal:Observable<RegistrationResult> = new Observable<RegistrationResult>();
+		
+		const requestOptions:any = this.getAuthenticatedRequestOptions();
+		
+		const requestBody = {
 			"firstName": registrationDetails.firstName,
 			"lastName": registrationDetails.lastName,
 			"email": registrationDetails.email,
@@ -176,13 +179,15 @@ export class ApiService {
 			"member": registrationDetails.member,
 			"waitList": registrationDetails.waitList
 		};
-		console.log("Sending the following registration: ", body);
+		console.log("Sending the following registration: ", requestBody);
 
-		return this.http.post(Configuration.registrationEndpoint, JSON.stringify(body), requestOptions)
+		return this.http.post(Configuration.registrationEndpoint, JSON.stringify(requestBody), requestOptions)
 			.map((res:Response) => {
-				let registrationResult: RegistrationResult = null;
+				console.log("Registration result: ",res.status);
+
+				let registrationResult: RegistrationResult;
 				let registrationDetails: RegistrationDetailsModel = new RegistrationDetailsModel();
-				let registrationResultState: RegistrationResultState = null;
+				let registrationResultState: RegistrationResultState = RegistrationResultState.FAILED;
 
 				if (res.status === 200) {
 					let jsonResult = null;
@@ -196,44 +201,42 @@ export class ApiService {
 						registrationDetails.slots = jsonResult.slots;
 						registrationDetails.member = jsonResult.member;
 						registrationDetails.waitList = jsonResult.waitList;
+						registrationResultState = RegistrationResultState.SUCCEEDED;
+						console.log("Registration suceeded!");
 					} catch(e:Error) {
+						console.log("Registration failed. Issue while parsing 200 OK response");
 						registrationResultState = RegistrationResultState.FAILED;
 					}
-					registrationResult = new RegistrationResult(registrationResult, registrationDetails);
 				}else if (res.status === 400 || 401 || 403) {
 					// 400: bad request
 					// 401: unauthorized (no token)
 					// 403: forbidden (token invalid, outdated, ...)
+					console.log("Registration failed. Status code: ",res.status);
 					registrationResultState = RegistrationResultState.FAILED;
 				}else if (res.status === 409) {
-					// 409: mail already registered
-					//		{ "email_already_registered": "<email>" } 
-					// 409: not enough slots available. Body of the response:
-					//		{ "not_enough_slots_available": "<remaining_slots>" }
-					
-					//TODO get json key: email_already_registered or not_enough_slots_available
-					// depending on which one, adapt result
-					
-					//registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
-					// mail already registered
+					console.log("Registration failed. Status code: ",res.status);
+					let jsonResult;
+					try {
+						jsonResult = res.json();
+						
+						if(jsonResult.hasOwnProperty("email_already_registered")){
+							registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
+						}else if(jsonResult.hasOwnProperty("not_enough_slots_available")){
+							registrationResultState = RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE;
+						}else{
+							console.log("Unknown conflict");
+							registrationResultState = RegistrationResultState.FAILED;
+						}
+					} catch(e:Error){
+						registrationResultState = RegistrationResultState.FAILED;
+					}
 				}else{
-					//FIXME fail: unknown state
+					console.log("Registration failed. Status code: ",res.status);
+					registrationResultState = RegistrationResultState.FAILED;
 				}
 
-				
+				registrationResult = new RegistrationResult(registrationResultState, registrationDetails);
 				return registrationResult;
-			})
-			.subscribe(
-				(data:Registration) => {
-					//FIXME implement
-					console.log("Data: ", data);
-				},
-				(err:any) => {
-					//FIXME implement
-					console.log("Error: ", err);
-				}
-			);
-
-		//TODO set correct return type 
+			});
 	}
 }
