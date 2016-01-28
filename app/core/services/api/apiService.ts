@@ -164,12 +164,12 @@ export class ApiService {
 
 	public register(registrationDetails:RegistrationDetailsModel):Observable<RegistrationResult> {
 		this.checkToken();
-		
+
 		// FIXME implement and return separate observable; see https://github.com/angular/angular/issues/6490
 		// const retVal:Observable<RegistrationResult> = new Observable<RegistrationResult>();
-		
+
 		const requestOptions:any = this.getAuthenticatedRequestOptions();
-		
+
 		const requestBody = {
 			"firstName": registrationDetails.firstName,
 			"lastName": registrationDetails.lastName,
@@ -190,7 +190,7 @@ export class ApiService {
 				let registrationResultState: RegistrationResultState = RegistrationResultState.FAILED;
 
 				if (res.status === 200) {
-					let jsonResult = null;
+					let jsonResult:any = null;
 					try {
 						jsonResult = res.json();
 						registrationDetails.uuid = jsonResult.uuid;
@@ -203,7 +203,7 @@ export class ApiService {
 						registrationDetails.waitList = jsonResult.waitList;
 						registrationResultState = RegistrationResultState.SUCCEEDED;
 						console.log("Registration suceeded!");
-					} catch(e:Error) {
+					} catch(e) {
 						console.log("Registration failed. Issue while parsing 200 OK response");
 						registrationResultState = RegistrationResultState.FAILED;
 					}
@@ -215,22 +215,22 @@ export class ApiService {
 					registrationResultState = RegistrationResultState.FAILED;
 				}else if (res.status === 409) {
 					console.log("Registration failed. Status code: ",res.status);
-					let jsonResult;
+					let jsonResult: any;
 					try {
 						jsonResult = res.json();
-						
-						if(jsonResult.hasOwnProperty("email_already_registered")){
+
+						if(jsonResult.hasOwnProperty("email_already_registered")) {
 							registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
-						}else if(jsonResult.hasOwnProperty("not_enough_slots_available")){
+						}else if(jsonResult.hasOwnProperty("not_enough_slots_available")) {
 							registrationResultState = RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE;
-						}else{
+						}else {
 							console.log("Unknown conflict");
 							registrationResultState = RegistrationResultState.FAILED;
 						}
-					} catch(e:Error){
+					} catch(e) {
 						registrationResultState = RegistrationResultState.FAILED;
 					}
-				}else{
+				}else {
 					console.log("Registration failed. Status code: ",res.status);
 					registrationResultState = RegistrationResultState.FAILED;
 				}

@@ -13,6 +13,7 @@ System.config({
     "core-js": "npm:core-js@1.2.6",
     "font-awesome": "npm:font-awesome@4.5.0",
     "localforage": "npm:localforage@1.3.1",
+    "lodash": "npm:lodash@4.0.1",
     "material-design-lite": "github:google/material-design-lite@1.0.6",
     "normalize.css": "github:necolas/normalize.css@3.0.3",
     "rxjs": "npm:rxjs@5.0.0-beta.0",
@@ -439,6 +440,9 @@ System.config({
       "promise": "npm:promise@5.0.0"
     },
     "npm:lodash@3.10.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash@4.0.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:loose-envify@1.1.0": {

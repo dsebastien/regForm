@@ -5,8 +5,8 @@ import {Component, AfterViewInit} from "angular2/core";
 import {NgForm, FORM_DIRECTIVES} from "angular2/common";
 
 import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerMaterialDesignLiteElement";
-
 import {RegistrationDetailsModel} from "../../core/services/api/registrationDetails.model";
+import {RegistrationResult, RegistrationResultState} from "../../core/services/api/registrationResult";
 
 // Google's reCaptcha
 // reference: https://developers.google.com/recaptcha/intro
@@ -85,7 +85,7 @@ export class Home implements AfterViewInit {
 			// todo reset captcha (?) / display error?
 			return;
 		}
-		
+
 		// FIXME avoid multiple form submissions
 
 		const registrationResultObservable:Observable<RegistrationResult> = this.apiService.register(this.model);
@@ -102,8 +102,7 @@ export class Home implements AfterViewInit {
 				this.model = new RegistrationDetailsModel();
 				Home.resetCaptcha(this.captchaWidgetId);
 			}
-		)
-		
+		);
 	}
 
 	// TODO remove this workarond when we know how to handle radio button groups with ngForm ngModel ...

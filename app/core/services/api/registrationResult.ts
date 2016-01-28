@@ -12,7 +12,7 @@ export enum RegistrationResultState {
 export class RegistrationResult {
 	registrationResultState: RegistrationResultState;
 	registrationDetails: RegistrationDetailsModel;
-	
+
 	constructor(registrationResultState:RegistrationResultState, registrationDetails:RegistrationDetailsModel) {
 		this.registrationResultState = registrationResultState;
 		this.registrationDetails = registrationDetails;
