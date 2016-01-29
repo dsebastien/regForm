@@ -165,8 +165,24 @@ export class ApiService {
 	public register(registrationDetails:RegistrationDetailsModel):Observable<RegistrationResult> {
 		this.checkToken();
 
-		// FIXME implement and return separate observable; see https://github.com/angular/angular/issues/6490
-		// const retVal:Observable<RegistrationResult> = new Observable<RegistrationResult>();
+		const retVal:Subject<RegistrationResult> = new Subject<RegistrationResult>();
+
+		let registrationResult: RegistrationResult;
+		let resultingRegistrationDetails: RegistrationDetailsModel = new RegistrationDetailsModel();
+		let registrationResultState: RegistrationResultState = RegistrationResultState.FAILED;
+
+		if(registrationDetails === null
+			|| registrationDetails.firstName === null
+			|| registrationDetails.lastName === null
+			|| registrationDetails.email === null
+			|| registrationDetails.phone === null
+			|| registrationDetails.slots === null
+			|| registrationDetails.member === null
+			|| registrationDetails.waitList === null) {
+			registrationResult = new RegistrationResult(registrationResultState, registrationDetails);
+			retVal.error(registrationResult);
+			return retVal;
+		}
 
 		const requestOptions:any = this.getAuthenticatedRequestOptions();
 
@@ -181,62 +197,70 @@ export class ApiService {
 		};
 		console.log("Sending the following registration: ", requestBody);
 
-		return this.http.post(Configuration.registrationEndpoint, JSON.stringify(requestBody), requestOptions)
-			.map((res:Response) => {
-				console.log("Registration result: ",res.status);
-
-				let registrationResult: RegistrationResult;
-				let registrationDetails: RegistrationDetailsModel = new RegistrationDetailsModel();
-				let registrationResultState: RegistrationResultState = RegistrationResultState.FAILED;
-
-				if (res.status === 200) {
+		this.http.post(Configuration.registrationEndpoint, JSON.stringify(requestBody), requestOptions)
+			.subscribe(
+				(res: Response) => { // success
+					// success
+					console.log("Registration result: ",res.status);
 					let jsonResult:any = null;
 					try {
 						jsonResult = res.json();
-						registrationDetails.uuid = jsonResult.uuid;
-						registrationDetails.firstName = jsonResult.firstName;
-						registrationDetails.lastName = jsonResult.lastName;
-						registrationDetails.email = jsonResult.email;
-						registrationDetails.phone = jsonResult.phone;
-						registrationDetails.slots = jsonResult.slots;
-						registrationDetails.member = jsonResult.member;
-						registrationDetails.waitList = jsonResult.waitList;
+						resultingRegistrationDetails.uuid = jsonResult.uuid;
+						resultingRegistrationDetails.firstName = jsonResult.firstName;
+						resultingRegistrationDetails.lastName = jsonResult.lastName;
+						resultingRegistrationDetails.email = jsonResult.email;
+						resultingRegistrationDetails.phone = jsonResult.phone;
+						resultingRegistrationDetails.slots = jsonResult.slots;
+						resultingRegistrationDetails.member = jsonResult.member;
+						resultingRegistrationDetails.waitList = jsonResult.waitList;
 						registrationResultState = RegistrationResultState.SUCCEEDED;
 						console.log("Registration suceeded!");
 					} catch(e) {
 						console.log("Registration failed. Issue while parsing 200 OK response");
 						registrationResultState = RegistrationResultState.FAILED;
 					}
-				}else if (res.status === 400 || 401 || 403) {
-					// 400: bad request
-					// 401: unauthorized (no token)
-					// 403: forbidden (token invalid, outdated, ...)
-					console.log("Registration failed. Status code: ",res.status);
-					registrationResultState = RegistrationResultState.FAILED;
-				}else if (res.status === 409) {
-					console.log("Registration failed. Status code: ",res.status);
-					let jsonResult: any;
-					try {
-						jsonResult = res.json();
+					console.log("Registation result ready");
+					registrationResult = new RegistrationResult(registrationResultState, resultingRegistrationDetails);
+					retVal.next(registrationResult);
+				},
+				(res: Response) => { // error
+					console.log("Registration result: ",res.status);
+					if (res.status === 400 || 401 || 403) {
+						// 400: bad request
+						// 401: unauthorized (no token)
+						// 403: forbidden (token invalid, outdated, ...)
+						console.log("Registration failed. Status code: ",res.status);
+						registrationResultState = RegistrationResultState.FAILED;
+					}else if (res.status === 409) {
+						console.log("Registration failed. Status code: ",res.status);
+						let jsonResult:any;
+						try {
+							jsonResult = res.json();
 
-						if(jsonResult.hasOwnProperty("email_already_registered")) {
-							registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
-						}else if(jsonResult.hasOwnProperty("not_enough_slots_available")) {
-							registrationResultState = RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE;
-						}else {
-							console.log("Unknown conflict");
+							if(jsonResult.hasOwnProperty("email_already_registered")) {
+								registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
+							}else if(jsonResult.hasOwnProperty("not_enough_slots_available")) {
+								registrationResultState = RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE;
+							}else {
+								console.log("Unknown conflict");
+								registrationResultState = RegistrationResultState.FAILED;
+							}
+						} catch(e){
 							registrationResultState = RegistrationResultState.FAILED;
 						}
-					} catch(e) {
+					}else {
+						console.log("Registration failed. Status code: ",res.status);
 						registrationResultState = RegistrationResultState.FAILED;
 					}
-				}else {
-					console.log("Registration failed. Status code: ",res.status);
-					registrationResultState = RegistrationResultState.FAILED;
-				}
 
-				registrationResult = new RegistrationResult(registrationResultState, registrationDetails);
-				return registrationResult;
-			});
+					registrationResult = new RegistrationResult(registrationResultState, resultingRegistrationDetails);
+					retVal.next(registrationResult);
+					retVal.complete();
+				},
+				() => {
+					retVal.complete();
+				}
+			);
+		return retVal;
 	}
 }
