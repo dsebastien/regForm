@@ -84,7 +84,6 @@ function getSlotsInformation(){
 	$remainingSlots = $totalSlots - $usedSlots;
 
 	// create the return object
-	// todo replace by class & instance
 	$retVal = array(
     	"totalSlots" => $totalSlots,
     	"usedSlots" => $usedSlots,
