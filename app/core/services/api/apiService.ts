@@ -225,16 +225,16 @@ export class ApiService {
 				},
 				(res: Response) => { // error
 					console.log("Registration failed: ",res.status);
-					if (res.status === 400 || 401 || 403) {
+					if (res.status === 400 || res.status === 401 || res.status === 403) {
 						// 400: bad request
 						// 401: unauthorized (no token)
 						// 403: forbidden (token invalid, outdated, ...)
 						registrationResultState = RegistrationResultState.FAILED;
 					}else if (res.status === 409) {
+						console.log("Error 409: conflict");
 						let jsonResult:any;
 						try {
 							jsonResult = res.json();
-
 							if(jsonResult.hasOwnProperty("email_already_registered")) {
 								registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
 							}else if(jsonResult.hasOwnProperty("not_enough_slots_available")) {
@@ -244,6 +244,7 @@ export class ApiService {
 								registrationResultState = RegistrationResultState.FAILED;
 							}
 						} catch(e){
+							console.log("Error during 409 parsing");
 							registrationResultState = RegistrationResultState.FAILED;
 						}
 					}else {

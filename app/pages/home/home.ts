@@ -116,27 +116,39 @@ export class Home implements AfterViewInit {
 				if(regResult === null || regResult.registrationResultState === RegistrationResultState.FAILED) {
 					console.log("Registration failed ",regResult);
 					this.router.navigate([
-						"registrationError", {param: 3}
+						"/RegistrationError", {
+							"message": "Une erreur est survenue pendant votre inscription."
+						}
 					]);
 				}else if(regResult.registrationResultState === RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE) {
-					console.log("not enough slots available!");
-					// TODO redirect to registrationFull page
+					console.log("Not enough slots available!");
+					this.router.navigate([
+						"/RegistrationFull", {}
+					]);
 				}else if(regResult.registrationResultState === RegistrationResultState.EMAIL_ALREADY_REGISTERED) {
-					console.log("email already registered!");
-					//TODO display a message: email already registered
-					this.submitButtonEnabled = true;
+					console.log("Email already registered!");
+					this.router.navigate([
+						"/RegistrationError", {
+							"message": "L'adresse e-mail que vous avez introduite ("+this.model.email+") est déjà enregistrée."
+						}
+					]);
 				}else if(regResult.registrationResultState === RegistrationResultState.SUCCEEDED) {
-					console.log("succeeded!");
-					//TODO redirect page success
+					console.log("Succeeded!");
+					this.router.navigate([
+						"/RegistrationSent", {}
+					]);
 				}else {
 					console.log("Unknown result state: ",regResult.registrationResultState);
-					//TODO redirect to generic error page
+					this.router.navigate([
+						"/RegistrationError", {
+							"message": "Une erreur est survenue pendant votre inscription."
+						}
+					]);
 				}
 			}
 		);
 	};
-
-	// TODO remove this workarond when we know how to handle radio button groups with ngForm ngModel ...
+	
 	setSlots(slots:number) {
 		this.model.slots = slots;
 	}

@@ -19,6 +19,7 @@ import {Home} from "../pages/home/home";
 import {Slots} from "../components/slots/slots";
 import {SlotsDetails} from "./services/api/slotsDetails";
 import {RegistrationConfirmation} from "../pages/registration-confirmation/registrationConfirmation";
+import {RegistrationSent} from "../pages/registration-sent/registrationSent";
 import {RegistrationFull} from "../pages/registration-full/registrationFull";
 import {RegistrationError} from "../pages/registration-error/registrationError";
 
@@ -31,6 +32,7 @@ import {RegistrationError} from "../pages/registration-error/registrationError";
 @RouteConfig([
 	{path: "/", component: Home, as: "Home", data: undefined},
 	{path: "/registrationConfirmation", component: RegistrationConfirmation, as: "RegistrationConfirmation", data: undefined},
+	{path: "/registrationSent", component: RegistrationSent, as: "RegistrationSent", data: undefined},
 	{path: "/registrationFull", component: RegistrationFull, as: "RegistrationFull", data: undefined},
 	{path: "/registrationError", component: RegistrationError, as: "RegistrationError", data: undefined}
 ])

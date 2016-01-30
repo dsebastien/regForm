@@ -50,9 +50,8 @@ $app->get('/confirm_registration/{uuid}', function($request, $response, $args) {
 	}
 	
 	$baseURL = getBaseURL();
-    // FIXME set correct url
-    $registrationConfirmedURL = $baseURL . "/_temp/#/registrationConfirmation";
-    $registrationFullURL = $baseURL . "/_temp/#/registrationFull";
+    $registrationConfirmedURL = $baseURL . "/liguefamjurbise/#/registrationConfirmation";
+    $registrationFullURL = $baseURL . "/liguefamjurbise/#/registrationFull";
 	
 	if($registrationAlreadyConfirmed){
 		// redirect to the registration confirmed page

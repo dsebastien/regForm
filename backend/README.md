@@ -29,67 +29,6 @@
 
 # Specifications
 
-## Registration form
-Pre-requisites:
-* the application has requested & received a token
-
-Steps:
-The user fills-in the form
-* provide details (firstname, lastname, ...)
-* choose number of slots
-* choose if he wishes to be put on the wait list
-  * by default it is FALSE
-  * the user is only given a choice if there is >=90% of slots used OR <=10 left
-    * because in that case it's more probably there won't be slots left once they confirm their e-mail
-
-The user submits the form
-* if the user has chosen to be added to the waiting list
-* the application passes the token along when it sends requests: X_Authorization: Bearer <token>
-
-Example requests:
-
-A non-member wishes does not wish to be on the wait list:
-```
-{
-	"firstName": "...",
-	"lastName": "...",
-	"email": "...",
-	"phone": "...",
-	"slots": 2,
-	"member": false,
-	"waitList": false
-}
-```
-
-A non-member wished to be on the wait list:
-```
-{
-	"firstName": "...",
-	"lastName": "...",
-	"email": "...",
-	"phone": "...",
-	"slots": 2,
-	"member": false,
-	"waitList": true
-}
-```
-
-## Registration form submission result front-end display
-Pre-requisites:
-* the back-end has provided a response to the registration request
-
-Steps:
-Once the application receives the response
-  * it first checks the response code
-    * 4xx or 5xx: display generic error page
-    * 200: redirect to confirmation page with all registration details (give the id)
-  * if confirmation page
-    * display registration details
-    * explain that they should check their mailbox
-
-The form should be fully reset: form fields & captcha
-
-
 ## E-mail available (/email_check)
 Steps:
 

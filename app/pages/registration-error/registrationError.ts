@@ -3,6 +3,7 @@
 // import Angular 2
 import {Component} from "angular2/core";
 import {RouteParams} from "angular2/router";
+
 import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerMaterialDesignLiteElement";
 
 @Component({
@@ -11,9 +12,15 @@ import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerM
 	directives: [RegisterMaterialDesignLiteElement]
 })
 export class RegistrationError {
+	private message:string = "";
 
-	constructor() {
+	constructor(params:RouteParams) {
 		console.log("Registration error page loaded");
+		this.fetchMessageFromParams(params);
+	}
+
+	fetchMessageFromParams(params:RouteParams) {
+		this.message = params.get("message");
 	}
 
 }
