@@ -84,6 +84,20 @@
 
 <!-- Polyfills: must all be loaded before SystemJS -->
 
+<!-- Fix for IE11: https://github.com/angular/angular/issues/6501#issuecomment-176114820 -->
+<script>
+	if (!Object.hasOwnProperty('name')) {
+		Object.defineProperty(Function.prototype, 'name', {
+			get: function() {
+				var matches = this.toString().match(/^\s*function\s*(\S*)\s*\(/);
+				var name = matches && matches.length > 1 ? matches[1] : "";
+				Object.defineProperty(this, 'name', {value: name});
+				return name;
+			}
+		});
+	}
+</script>
+
 <!-- ES6 Shim (ES2015 support) -->
 <!-- inline node_modules/es6-shim/es6-shim.js -->
 <script inline src="node_modules/es6-shim/es6-shim.js"></script>
