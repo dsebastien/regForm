@@ -7,7 +7,6 @@ import {App} from "./app";
 import {bootstrap} from "angular2/platform/browser";
 import {provide, enableProdMode} from "angular2/core";
 import {HTTP_PROVIDERS} from "angular2/http";
-import * as _ from "lodash";
 
 // import Angular 2 Component Router
 // reference: http://blog.thoughtram.io/angular/2015/06/16/routing-in-angular-2.html
