@@ -80,7 +80,7 @@
 		<div class="mdl-layout__header-row">
 			<!-- Submit -->
 			<div class="mdl-layout-spacer"></div>
-			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="7" [disabled]="!f.form.valid || !captchaCompletedSuccessfully()">
+			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="7" [disabled]="!f.form.valid || !captchaCompletedSuccessfully() || !submitButtonShouldBeEnabled()">
 				Envoyer
 			</button>
 		</div>

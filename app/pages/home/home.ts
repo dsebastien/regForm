@@ -3,7 +3,7 @@
 // import Angular 2
 import {Component, AfterViewInit} from "angular2/core";
 import {NgForm, FORM_DIRECTIVES} from "angular2/common";
-
+import {Router} from "angular2/router";
 import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerMaterialDesignLiteElement";
 import {RegistrationDetailsModel} from "../../core/services/api/registrationDetails.model";
 import {RegistrationResult, RegistrationResultState} from "../../core/services/api/registrationResult";
@@ -35,8 +35,13 @@ export class Home implements AfterViewInit {
 	private apiService:ApiService;
 	private slots:SlotsDetails;
 
-	constructor(apiService:ApiService) {
+	private submitButtonEnabled: boolean = true;
+
+	private router:Router;
+
+	constructor(apiService:ApiService, router: Router) {
 		this.apiService = apiService;
+		this.router = router;
 
 		const slotsObservable:Observable<SlotsDetails> = apiService.getSlots();
 		slotsObservable.subscribe((value:SlotsDetails) => {
@@ -79,31 +84,57 @@ export class Home implements AfterViewInit {
 		return this.captchaCompleted;
 	}
 
-	onSubmit() {
+	submitButtonShouldBeEnabled() {
+		return this.submitButtonEnabled;
+	}
+
+	public onSubmit = () => {
 		if(!this.captchaCompleted) {
 			console.log("Cannot submit form if the captcha has not been completed!");
-			// todo reset captcha (?) / display error?
+			Home.resetCaptcha(this.captchaWidgetId);
 			return;
 		}
 
-		// FIXME avoid multiple form submissions
+		// avoid multiple submissions
+		this.submitButtonEnabled = false;
+
+		let regResult:RegistrationResult = null;
 
 		const registrationResultObservable:Observable<RegistrationResult> = this.apiService.register(this.model);
 		registrationResultObservable.subscribe(
 			(registrationResult:RegistrationResult) => {
-				console.log("Registration result: ",registrationResult);
-				// TODO get the result and redirect the user if needed 
+				regResult = registrationResult;
 			},
 			(error:any) => {
-				console.log("Error ",error);
-			},
-			() => {
-				console.log("Completed!");
+				console.log("Error (abnormal, should never be called!): ",error);
 				this.model = new RegistrationDetailsModel();
 				Home.resetCaptcha(this.captchaWidgetId);
+				this.submitButtonEnabled = true;
+			},
+			() => {
+				console.log("Registration completed, checking result");
+				if(regResult === null || regResult.registrationResultState === RegistrationResultState.FAILED) {
+					console.log("Registration failed ",regResult);
+					this.router.navigate([
+						"registrationError", {param: 3}
+					]);
+				}else if(regResult.registrationResultState === RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE) {
+					console.log("not enough slots available!");
+					// TODO redirect to registrationFull page
+				}else if(regResult.registrationResultState === RegistrationResultState.EMAIL_ALREADY_REGISTERED) {
+					console.log("email already registered!");
+					//TODO display a message: email already registered
+					this.submitButtonEnabled = true;
+				}else if(regResult.registrationResultState === RegistrationResultState.SUCCEEDED) {
+					console.log("succeeded!");
+					//TODO redirect page success
+				}else {
+					console.log("Unknown result state: ",regResult.registrationResultState);
+					//TODO redirect to generic error page
+				}
 			}
 		);
-	}
+	};
 
 	// TODO remove this workarond when we know how to handle radio button groups with ngForm ngModel ...
 	setSlots(slots:number) {

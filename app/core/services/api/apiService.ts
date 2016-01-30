@@ -201,7 +201,7 @@ export class ApiService {
 			.subscribe(
 				(res: Response) => { // success
 					// success
-					console.log("Registration result: ",res.status);
+					console.log("Registration succeeded: ",res.status);
 					let jsonResult:any = null;
 					try {
 						jsonResult = res.json();
@@ -224,15 +224,13 @@ export class ApiService {
 					retVal.next(registrationResult);
 				},
 				(res: Response) => { // error
-					console.log("Registration result: ",res.status);
+					console.log("Registration failed: ",res.status);
 					if (res.status === 400 || 401 || 403) {
 						// 400: bad request
 						// 401: unauthorized (no token)
 						// 403: forbidden (token invalid, outdated, ...)
-						console.log("Registration failed. Status code: ",res.status);
 						registrationResultState = RegistrationResultState.FAILED;
 					}else if (res.status === 409) {
-						console.log("Registration failed. Status code: ",res.status);
 						let jsonResult:any;
 						try {
 							jsonResult = res.json();
@@ -255,7 +253,7 @@ export class ApiService {
 
 					registrationResult = new RegistrationResult(registrationResultState, resultingRegistrationDetails);
 					retVal.next(registrationResult);
-					retVal.complete();
+					retVal.complete(); // not as per Observable contract
 				},
 				() => {
 					retVal.complete();
