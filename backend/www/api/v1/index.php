@@ -11,7 +11,7 @@ require "api_utils.php";
 require "api_utils_database.php";
 
 // toggle for production
-$production = false;
+$production = true;
 
 ///////////////////////////////////////////////////////////////////
 // REST API
