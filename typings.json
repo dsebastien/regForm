@@ -4,6 +4,7 @@
   },
   "devDependencies": {},
   "ambientDependencies": {
+    "localForage": "github:DefinitelyTyped/DefinitelyTyped/localForage/localForage.d.ts#bed1b13d7935dc027c94839379e654be96e8b0b2",
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#86dbea8fc37d9473fee465da4f0a21bea4f8cbd9"
   }
 }
