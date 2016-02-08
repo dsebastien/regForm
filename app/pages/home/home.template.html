@@ -25,6 +25,14 @@
 		</div>
 
 		&nbsp;
+
+		<!-- City -->
+		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
+			<input class="mdl-textfield__input" type="text" id="city" ngControl="city" [(ngModel)]="model.city" tabindex="5" required>
+			<label class="mdl-textfield__label" for="city">Localité</label>
+		</div>
+
+		<br />
 		
 		<!-- Phone -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
@@ -53,7 +61,7 @@
 		
 		<!-- Member -->
 		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="member" mdl-register-element>
-			<input type="checkbox" id="member" class="mdl-checkbox__input" ngControl="member" [(ngModel)]="model.member" tabindex="5">
+			<input type="checkbox" id="member" class="mdl-checkbox__input" ngControl="member" [(ngModel)]="model.member" tabindex="6">
 			<span class="mdl-checkbox__label">Je suis membre de la Ligue des familles</span>
 		</label>
 
@@ -67,7 +75,7 @@
 		
 		<!-- Wait list -->
 		<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="waitList" mdl-register-element [hidden]="!shouldDisplayWaitListChoice()">
-			<input type="checkbox" id="waitList" class="mdl-checkbox__input" ngControl="waitList" [(ngModel)]="model.waitList" tabindex="6">
+			<input type="checkbox" id="waitList" class="mdl-checkbox__input" ngControl="waitList" [(ngModel)]="model.waitList" tabindex="7">
 			<span class="mdl-checkbox__label">S'il n'y a plus assez de places libres, je souhaite être placé sur la liste d'attente</span>
 		</label>
 		<br />
@@ -86,7 +94,7 @@
 		<div class="mdl-layout__header-row">
 			<!-- Submit -->
 			<div class="mdl-layout-spacer"></div>
-			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="7" [disabled]="!f.form.valid || !captchaCompletedSuccessfully() || !submitButtonShouldBeEnabled()">
+			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" mdl-register-element tabindex="8" [disabled]="!f.form.valid || !captchaCompletedSuccessfully() || !submitButtonShouldBeEnabled()">
 				Envoyer
 			</button>
 		</div>

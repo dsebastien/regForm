@@ -4,6 +4,7 @@ CREATE TABLE `foire_vetements` (
 	`first_name` TEXT NOT NULL ,
 	`last_name` TEXT NOT NULL ,
 	`email` TEXT NOT NULL ,
+	`city` TEXT NOT NULL ,
 	`phone_number` TEXT NOT NULL ,
 	`slots` INT(1) NOT NULL ,
 	`member` BOOLEAN NOT NULL ,

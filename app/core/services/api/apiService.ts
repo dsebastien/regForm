@@ -13,7 +13,6 @@ import {Observable, Subject} from "rxjs";
 import "rxjs/add/operator/map";
 
 // import localForage
-//TODO remove and re-import localForage once a solution is found for #41: https://github.com/dsebastien/regForm/issues/41
 const localForage:LocalForage = require("localforage");
 
 // import app components
@@ -176,6 +175,7 @@ export class ApiService {
 			|| registrationDetails.firstName === null
 			|| registrationDetails.lastName === null
 			|| registrationDetails.email === null
+			|| registrationDetails.city === null
 			|| registrationDetails.phone === null
 			|| registrationDetails.slots === null
 			|| registrationDetails.member === null
@@ -208,6 +208,7 @@ export class ApiService {
 			"firstName": registrationDetails.firstName,
 			"lastName": registrationDetails.lastName,
 			"email": registrationDetails.email,
+			"city": registrationDetails.city,
 			"phone": registrationDetails.phone,
 			"slots": registrationDetails.slots,
 			"member": registrationDetails.member,
@@ -228,13 +229,14 @@ export class ApiService {
 						resultingRegistrationDetails.firstName = jsonResult.firstName;
 						resultingRegistrationDetails.lastName = jsonResult.lastName;
 						resultingRegistrationDetails.email = jsonResult.email;
+						resultingRegistrationDetails.city = jsonResult.city;
 						resultingRegistrationDetails.phone = jsonResult.phone;
 						resultingRegistrationDetails.slots = jsonResult.slots;
 						resultingRegistrationDetails.member = jsonResult.member;
 						resultingRegistrationDetails.memberNumber = jsonResult.memberNumber;
 						resultingRegistrationDetails.waitList = jsonResult.waitList;
 						registrationResultState = RegistrationResultState.SUCCEEDED;
-						console.log("Registration suceeded!");
+						console.log("Registration succeeded!");
 					} catch(e) {
 						console.log("Registration failed. Issue while parsing 200 OK response");
 						registrationResultState = RegistrationResultState.FAILED;

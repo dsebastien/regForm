@@ -5,6 +5,7 @@ export class RegistrationDetailsModel {
 	firstName:string = "";
 	lastName:string = "";
 	email:string = "";
+	city:string = "";
 	phone:string = "";
 	slots:number = 1;
 	member: boolean = false;

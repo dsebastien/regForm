@@ -30,6 +30,7 @@ $app->post('/register', function($request, $response) {
     $firstName = null;
     $lastName = null;
     $email = null;
+    $city = null;
     $phone = null;
     $slots = null;
     $member = null;
@@ -41,6 +42,7 @@ $app->post('/register', function($request, $response) {
     	ensureThatKeyExists("firstName", $input);
     	ensureThatKeyExists("lastName", $input);
     	ensureThatKeyExists("email", $input);
+    	ensureThatKeyExists("city", $input);
     	ensureThatKeyExists("phone", $input);
     	ensureThatKeyExists("slots", $input);
     	ensureThatKeyExists("member", $input);
@@ -51,6 +53,7 @@ $app->post('/register', function($request, $response) {
     	$firstName = $input["firstName"];
     	$lastName = $input["lastName"];
     	$email = $input["email"];
+    	$city = $input["city"];
     	$phone = $input["phone"];
     	$slots = $input["slots"];
     	$member = $input["member"];
@@ -62,6 +65,7 @@ $app->post('/register', function($request, $response) {
     	$firstName = ensureNotEmpty($firstName);
     	$lastName = ensureNotEmpty($lastName);
     	$email = ensureNotEmpty($email);
+    	$city = ensureNotEmpty($city);
     	// phone can be empty
     	
     	// ensure that email is an email
@@ -149,6 +153,7 @@ $app->post('/register', function($request, $response) {
 	$escapedFirstName = $dbConnection->real_escape_string($firstName);
 	$escapedLastName = $dbConnection->real_escape_string($lastName);
 	$escapedPhone = $dbConnection->real_escape_string($phone);
+	$escapedCity = $dbConnection->real_escape_string($city);
 	//$escapedEmail (already defined above)
 	
 	// the other input values don't need escaping, we've checked them already (number & booleans)
@@ -165,7 +170,7 @@ $app->post('/register', function($request, $response) {
 	// finally, we need the client's IP
 	$clientIP = getClientIP();
 	
-	$sql = "INSERT INTO `foire_vetements` (uuid, first_name, last_name, email, phone_number, slots, member, member_number, on_wait_list, created_on, client_ip) VALUES ('$uuid', '$escapedFirstName', '$escapedLastName','$escapedEmail', '$escapedPhone', $slots, $memberAsInteger, '$escapedMemberNumber', $waitListAsInteger, now(), '$clientIP')";
+	$sql = "INSERT INTO `foire_vetements` (uuid, first_name, last_name, email, city, phone_number, slots, member, member_number, on_wait_list, created_on, client_ip) VALUES ('$uuid', '$escapedFirstName', '$escapedLastName','$escapedEmail', '$escapedCity', '$escapedPhone', $slots, $memberAsInteger, '$escapedMemberNumber', $waitListAsInteger, now(), '$clientIP')";
 	
 	$result = null;
 	if(!$result = $dbConnection->query($sql)){
@@ -213,6 +218,7 @@ $app->post('/register', function($request, $response) {
     	"firstName" => $firstName,
     	"lastName" => $lastName,
     	"email" => $email,
+    	"city" => $city,
     	"phone" => $phone,
     	"slots" => $slots,
     	"member" => $member,
