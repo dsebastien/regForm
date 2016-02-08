@@ -4,9 +4,6 @@
 import {Component, AfterViewInit} from "angular2/core";
 import {NgForm, FORM_DIRECTIVES} from "angular2/common";
 import {Router} from "angular2/router";
-import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerMaterialDesignLiteElement";
-import {RegistrationDetailsModel} from "../../core/services/api/registrationDetails.model";
-import {RegistrationResult, RegistrationResultState} from "../../core/services/api/registrationResult";
 
 // Google's reCaptcha
 // reference: https://developers.google.com/recaptcha/intro
@@ -16,8 +13,12 @@ declare var grecaptcha:any;
 import {Observable, Subject} from "rxjs";
 import "rxjs/add/operator/map";
 
+import {RegisterMaterialDesignLiteElement} from "../../core/directives/registerMaterialDesignLiteElement";
+import {RegistrationDetailsModel} from "../../core/services/api/registrationDetails.model";
+import {RegistrationResult, RegistrationResultState} from "../../core/services/api/registrationResult";
 import {ApiService} from "../../core/services/api/apiService";
 import {SlotsDetails} from "../../core/services/api/slotsDetails";
+import {isNumeric} from "../../core/commons/utils";
 
 @Component({
 	selector: "page-home",
@@ -84,14 +85,37 @@ export class Home implements AfterViewInit {
 		return this.captchaCompleted;
 	}
 
+	memberNumberIsMissing():boolean {
+		let retVal = false;
+
+		const numberShouldBeGiven = this.model.member === true;
+
+		if(numberShouldBeGiven) {
+			if(this.model.memberNumber.trim() === "") {
+				retVal = true;
+			}else if(this.model.memberNumber.length !== 6) {
+				retVal = true;
+			}else if(!isNumeric(this.model.memberNumber)) {
+				retVal = true;
+			}
+		}
+
+		return retVal;
+	}
+
 	submitButtonShouldBeEnabled() {
-		return this.submitButtonEnabled;
+		return this.submitButtonEnabled && !this.memberNumberIsMissing();
 	}
 
 	public onSubmit = () => {
 		if(!this.captchaCompleted) {
 			console.log("Cannot submit form if the captcha has not been completed!");
 			Home.resetCaptcha(this.captchaWidgetId);
+			return;
+		}
+
+		if(this.memberNumberIsMissing()) {
+			console.log("Cannot submit form if the member number has not been given!");
 			return;
 		}
 
@@ -129,7 +153,7 @@ export class Home implements AfterViewInit {
 					console.log("Email already registered!");
 					this.router.navigate([
 						"/RegistrationError", {
-							"message": "L'adresse e-mail que vous avez introduite ("+this.model.email+") est déjà enregistrée."
+							"message": "Votre réservation a déjà été enregistrée." // set a more generic error message
 						}
 					]);
 				}else if(regResult.registrationResultState === RegistrationResultState.SUCCEEDED) {
@@ -148,7 +172,7 @@ export class Home implements AfterViewInit {
 			}
 		);
 	};
-	
+
 	setSlots(slots:number) {
 		this.model.slots = slots;
 	}

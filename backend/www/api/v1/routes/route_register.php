@@ -33,6 +33,7 @@ $app->post('/register', function($request, $response) {
     $phone = null;
     $slots = null;
     $member = null;
+    $memberNumber = null;
     $waitList = null;
     
     try{
@@ -43,6 +44,7 @@ $app->post('/register', function($request, $response) {
     	ensureThatKeyExists("phone", $input);
     	ensureThatKeyExists("slots", $input);
     	ensureThatKeyExists("member", $input);
+    	ensureThatKeyExists("memberNumber", $input);
     	ensureThatKeyExists("waitList", $input);
     	
     	// get the values
@@ -52,6 +54,7 @@ $app->post('/register', function($request, $response) {
     	$phone = $input["phone"];
     	$slots = $input["slots"];
     	$member = $input["member"];
+    	$memberNumber = $input["memberNumber"];
     	$waitList = $input["waitList"];
     	
     	// the values should not be undefined, null or empty
@@ -77,6 +80,10 @@ $app->post('/register', function($request, $response) {
     	// ensure that member is a boolean 
     	if(!is_bool($member)){
     		throw new Exception("Member must be a boolean!");
+    	}else if($member === true){
+    	 	if(!is_numeric($memberNumber)){
+    			throw new Exception("If member is true, then member number must be provided and must be numeric!");
+    		}
     	}
     	
     	// ensure that waitList is a boolean
@@ -95,7 +102,6 @@ $app->post('/register', function($request, $response) {
     $escapedEmail = $dbConnection->real_escape_string($email);
     
     // check if the email is already known
-    // FIXME eliminate duplication w/ route_email_check
     $sql = "SELECT id FROM `foire_vetements` WHERE email = '$escapedEmail'";
 	
     $result = null;
@@ -150,6 +156,8 @@ $app->post('/register', function($request, $response) {
 	// member
 	// waitList
 	
+	$escapedMemberNumber = $dbConnection->real_escape_string($memberNumber);
+	
 	// member and waitList being booleans, they need to be converted to int values before insertion
 	$memberAsInteger = convertBooleanToInt($member);
 	$waitListAsInteger = convertBooleanToInt($waitList);
@@ -157,7 +165,7 @@ $app->post('/register', function($request, $response) {
 	// finally, we need the client's IP
 	$clientIP = getClientIP();
 	
-	$sql = "INSERT INTO `foire_vetements` (uuid, first_name, last_name, email, phone_number, slots, member, on_wait_list, created_on, client_ip) VALUES ('$uuid', '$escapedFirstName', '$escapedLastName','$escapedEmail', '$escapedPhone', $slots, $memberAsInteger, $waitListAsInteger, now(), '$clientIP')";
+	$sql = "INSERT INTO `foire_vetements` (uuid, first_name, last_name, email, phone_number, slots, member, member_number, on_wait_list, created_on, client_ip) VALUES ('$uuid', '$escapedFirstName', '$escapedLastName','$escapedEmail', '$escapedPhone', $slots, $memberAsInteger, '$escapedMemberNumber', $waitListAsInteger, now(), '$clientIP')";
 	
 	$result = null;
 	if(!$result = $dbConnection->query($sql)){
@@ -174,7 +182,6 @@ $app->post('/register', function($request, $response) {
     	"uuid" => $uuid
     ]);	
     $confirmRegistrationURL = $baseURL . $confirmRegistrationRoutePath;
-    
     
 	// load mail configuration
     // adapt the path depending on where the file is located
@@ -209,6 +216,7 @@ $app->post('/register', function($request, $response) {
     	"phone" => $phone,
     	"slots" => $slots,
     	"member" => $member,
+    	"memberNumber" => $memberNumber,
     	"waitList" => $waitList
     );
 	

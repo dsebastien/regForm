@@ -7,6 +7,7 @@ CREATE TABLE `foire_vetements` (
 	`phone_number` TEXT NOT NULL ,
 	`slots` INT(1) NOT NULL ,
 	`member` BOOLEAN NOT NULL ,
+	`member_number` TEXT NOT NULL ,
 	`on_wait_list` BOOLEAN NOT NULL DEFAULT 0,
 	`confirmed` BOOLEAN NOT NULL DEFAULT 0 ,
 	`cancelled` BOOLEAN NOT NULL DEFAULT 0 ,

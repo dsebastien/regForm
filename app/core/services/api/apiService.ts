@@ -23,6 +23,7 @@ import {TokenConverter} from "./tokenConverter";
 import {SlotsDetails} from "./slotsDetails";
 import {RegistrationDetailsModel} from "./registrationDetails.model";
 import {RegistrationResult, RegistrationResultState} from "./registrationResult";
+import {isNumeric} from "../../commons/utils";
 
 /*
  * Service responsible for requesting/checking tokens.
@@ -184,6 +185,23 @@ export class ApiService {
 			return retVal;
 		}
 
+		if(registrationDetails.member) {
+			let memberNumberIsValid = true;
+			if(registrationDetails.memberNumber.trim() === "") {
+				memberNumberIsValid = false;
+			}else if(registrationDetails.memberNumber.length !== 6) {
+				memberNumberIsValid = false;
+			}else if(!isNumeric(registrationDetails.memberNumber)) {
+				memberNumberIsValid = false;
+			}
+
+			if(!memberNumberIsValid) {
+				registrationResult = new RegistrationResult(registrationResultState, registrationDetails);
+				retVal.error(registrationResult);
+				return retVal;
+			}
+		}
+
 		const requestOptions:any = this.getAuthenticatedRequestOptions();
 
 		const requestBody = {
@@ -193,13 +211,14 @@ export class ApiService {
 			"phone": registrationDetails.phone,
 			"slots": registrationDetails.slots,
 			"member": registrationDetails.member,
+			"memberNumber": registrationDetails.memberNumber,
 			"waitList": registrationDetails.waitList
 		};
 		console.log("Sending the following registration: ", requestBody);
 
 		this.http.post(Configuration.registrationEndpoint, JSON.stringify(requestBody), requestOptions)
 			.subscribe(
-				(res: Response) => { // success
+				(res: Response) => {
 					// success
 					console.log("Registration succeeded: ",res.status);
 					let jsonResult:any = null;
@@ -212,6 +231,7 @@ export class ApiService {
 						resultingRegistrationDetails.phone = jsonResult.phone;
 						resultingRegistrationDetails.slots = jsonResult.slots;
 						resultingRegistrationDetails.member = jsonResult.member;
+						resultingRegistrationDetails.memberNumber = jsonResult.memberNumber;
 						resultingRegistrationDetails.waitList = jsonResult.waitList;
 						registrationResultState = RegistrationResultState.SUCCEEDED;
 						console.log("Registration suceeded!");
@@ -219,7 +239,7 @@ export class ApiService {
 						console.log("Registration failed. Issue while parsing 200 OK response");
 						registrationResultState = RegistrationResultState.FAILED;
 					}
-					console.log("Registation result ready");
+					console.log("Registration result ready");
 					registrationResult = new RegistrationResult(registrationResultState, resultingRegistrationDetails);
 					retVal.next(registrationResult);
 				},

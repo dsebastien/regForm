@@ -8,5 +8,6 @@ export class RegistrationDetailsModel {
 	phone:string = "";
 	slots:number = 1;
 	member: boolean = false;
+	memberNumber:string = "";
 	waitList:boolean = false;
 }
