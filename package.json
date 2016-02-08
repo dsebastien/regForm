@@ -61,6 +61,7 @@
     "npm": ">=2.0.0"
   },
   "scripts": {
+    "tsc": "tsc",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "clean": "gulp clean",
     "compile": "gulp",
