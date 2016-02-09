@@ -8,9 +8,9 @@ System.config({
 
   map: {
     "angular2": "npm:angular2@2.0.0-beta.3",
-    "babel": "npm:babel-core@6.5.1",
+    "babel": "npm:babel-core@6.5.0",
     "babel-runtime": "npm:babel-runtime@6.5.0",
-    "core-js": "npm:core-js@1.2.6",
+    "core-js": "npm:core-js@2.1.0",
     "font-awesome": "npm:font-awesome@4.5.0",
     "localforage": "npm:localforage@1.3.3",
     "lodash": "npm:lodash@4.3.0",
@@ -119,6 +119,35 @@ System.config({
       "js-tokens": "npm:js-tokens@1.0.2",
       "line-numbers": "npm:line-numbers@0.2.0",
       "repeating": "npm:repeating@1.1.3"
+    },
+    "npm:babel-core@6.5.0": {
+      "babel-code-frame": "npm:babel-code-frame@6.5.0",
+      "babel-generator": "npm:babel-generator@6.5.0",
+      "babel-helpers": "npm:babel-helpers@6.5.0",
+      "babel-messages": "npm:babel-messages@6.5.0",
+      "babel-register": "npm:babel-register@6.5.1",
+      "babel-runtime": "npm:babel-runtime@5.8.35",
+      "babel-template": "npm:babel-template@6.5.0",
+      "babel-traverse": "npm:babel-traverse@6.5.0",
+      "babel-types": "npm:babel-types@6.5.1",
+      "babylon": "npm:babylon@6.5.0",
+      "convert-source-map": "npm:convert-source-map@1.1.3",
+      "debug": "npm:debug@2.2.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "json5": "npm:json5@0.4.0",
+      "lodash": "npm:lodash@3.10.1",
+      "minimatch": "npm:minimatch@2.0.10",
+      "module": "github:jspm/nodelibs-module@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "path-exists": "npm:path-exists@1.0.0",
+      "path-is-absolute": "npm:path-is-absolute@1.0.0",
+      "private": "npm:private@0.1.6",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "shebang-regex": "npm:shebang-regex@1.0.0",
+      "slash": "npm:slash@1.0.0",
+      "source-map": "npm:source-map@0.5.3",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:babel-core@6.5.1": {
       "babel-code-frame": "npm:babel-code-frame@6.5.0",
@@ -307,6 +336,12 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
     "npm:core-js@1.2.6": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:core-js@2.1.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",

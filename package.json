@@ -20,17 +20,17 @@
     "configFile": "jspm.conf.js",
     "dependencies": {
       "angular2": "npm:angular2@2.0.0-beta.3",
-      "babel-runtime": "npm:babel-runtime@6.5.x",
+      "babel-runtime": "npm:babel-runtime@6.5.0",
       "font-awesome": "npm:font-awesome@4.5.0",
-      "localforage": "npm:localforage@1.3.x",
-      "lodash": "npm:lodash@4.3.x",
+      "localforage": "npm:localforage@1.3.3",
+      "lodash": "npm:lodash@4.3.0",
       "material-design-lite": "github:google/material-design-lite@1.1.1",
       "normalize.css": "github:necolas/normalize.css@3.0.3",
       "rxjs": "npm:rxjs@5.0.0-beta.0"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@6.5.x",
-      "core-js": "npm:core-js@1.2.x"
+      "babel": "npm:babel-core@6.5.0",
+      "core-js": "npm:core-js@2.1.0"
     }
   },
   "dependencies": {
