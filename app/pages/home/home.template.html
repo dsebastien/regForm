@@ -5,7 +5,7 @@
 		<!-- First name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
 			<input class="mdl-textfield__input" type="text" id="firstName" ngControl="firstName" [(ngModel)]="model.firstName" tabindex="1" required>
-			<label class="mdl-textfield__label" for="firstName">Prénom</label>
+			<label class="mdl-textfield__label" for="firstName">Prénom <span class="required-field">*</span></label>
 		</div>
 		
 		&nbsp;
@@ -13,7 +13,7 @@
 		<!-- Last name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
 			<input class="mdl-textfield__input" type="text" id="lastName" ngControl="lastName" [(ngModel)]="model.lastName" tabindex="2" required>
-			<label class="mdl-textfield__label" for="lastName">Nom</label>
+			<label class="mdl-textfield__label" for="lastName">Nom <span class="required-field">*</span></label>
 		</div>
 		
 		<br />
@@ -21,7 +21,7 @@
 		<!-- Email -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
 			<input class="mdl-textfield__input" type="email" id="email" ngControl="email" [(ngModel)]="model.email" tabindex="3" required>
-			<label class="mdl-textfield__label" for="email">Email</label>
+			<label class="mdl-textfield__label" for="email">Email <span class="required-field">*</span></label>
 		</div>
 
 		&nbsp;
@@ -29,15 +29,15 @@
 		<!-- City -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
 			<input class="mdl-textfield__input" type="text" id="city" ngControl="city" [(ngModel)]="model.city" tabindex="5" required>
-			<label class="mdl-textfield__label" for="city">Localité</label>
+			<label class="mdl-textfield__label" for="city">Localité <span class="required-field">*</span></label>
 		</div>
 
 		<br />
 		
 		<!-- Phone -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
-			<input class="mdl-textfield__input" type="text" pattern="^[0-9+]*$" id="phone" ngControl="phone" [(ngModel)]="model.phone" tabindex="4">
-			<label class="mdl-textfield__label" for="phone">GSM</label>
+			<input class="mdl-textfield__input" type="text" pattern="^[0-9+]*$" id="phone" ngControl="phone" [(ngModel)]="model.phone" tabindex="4" required>
+			<label class="mdl-textfield__label" for="phone">GSM <span class="required-field">*</span></label>
 		</div>
 		
 		<br />
@@ -68,7 +68,7 @@
 		<!-- Member number -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" [hidden]="!model.member" mdl-register-element>
 			<input class="mdl-textfield__input" type="text" id="memberNumber" ngControl="memberNumber" [(ngModel)]="model.memberNumber" maxlength="6" pattern="\d{6}">
-			<label class="mdl-textfield__label" for="memberNumber">Numéro de membre</label>
+			<label class="mdl-textfield__label" for="memberNumber">Numéro de membre <span class="required-field">*</span></label>
 		</div>
 		
 		<br />
