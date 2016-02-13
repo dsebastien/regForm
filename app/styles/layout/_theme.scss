@@ -31,3 +31,16 @@ progress::progress-value {
 		  linear-gradient(left, #c40c00, #2fba2f);
 }
 */
+
+// Nicer icons with some hover colors
+.fa-facebook-square:hover {
+  color:darkblue;
+}
+
+.fa-twitter-square:hover {
+  color:lightblue;
+}
+
+.fa-google-plus-square:hover {
+  color: #d34836;
+}
