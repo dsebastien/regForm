@@ -12,15 +12,3 @@ Header always set X-Xss-Protection "1; mode=block"
 Header always set Access-Control-Allow-Methods: "GET,POST"
 Header always set Access-Control-Allow-Origin "*"
 </IfModule>
-
-<IfModule mod_rewrite.c>
-RewriteEngine On
-
-# Clean URLs
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [QSA,L]
-# QSA: append query string
-# L: last
-# RewriteRule reference: http://stackoverflow.com/questions/12155991/using-multiple-rewrite-rules
-</IfModule>
