@@ -51,11 +51,12 @@ $app->get('/confirm_registration/{uuid}', function($request, $response, $args) {
 	
 	$baseURL = getBaseURL();
     $registrationConfirmedURL = $baseURL . "/liguefamjurbise/#/registrationConfirmation";
+    $registrationAlreadyConfirmedURL = $baseURL . "/liguefamjurbise/#/registrationAlreadyConfirmed";
     $registrationFullURL = $baseURL . "/liguefamjurbise/#/registrationFull";
 	
 	if($registrationAlreadyConfirmed){
 		// redirect to the registration confirmed page
-		$response = $response->withHeader('Location', $registrationConfirmedURL);
+		$response = $response->withHeader('Location', $registrationAlreadyConfirmedURL);
 		$response = $response->withStatus(302); // found
 		return $response;
 	}
