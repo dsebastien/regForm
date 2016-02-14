@@ -44,3 +44,19 @@ progress::progress-value {
 .fa-google-plus-square:hover {
   color: #d34836;
 }
+
+.red {
+  color: red;
+}
+
+.infoBox {
+  background-color: #f6f3f3;
+  -webkit-box-shadow: 6px 6px 25px -5px rgba(0,0,0,0.56);
+  -moz-box-shadow: 6px 6px 25px -5px rgba(0,0,0,0.56);
+  box-shadow: 6px 6px 25px -5px rgba(0,0,0,0.56);
+  padding: 10px;
+  border-radius: 20px 0px 20px 0px;
+  -moz-border-radius: 20px 0px 20px 0px;
+  -webkit-border-radius: 20px 0px 20px 0px;
+  border: 1px solid #ff0000;
+}

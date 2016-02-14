@@ -1,6 +1,13 @@
 <h4 class="display-1">Formulaire d'inscription</h4>
 
 <div>
+	<div [hidden]="!shouldDisplayWaitListChoice()">
+		<div class="infoBox">
+			<i class="fa fa-exclamation-circle fa-2x red"></i><br /><span class="red">Tous les emplacements sont déjà réservés! Si vous souhaitez être placé sur liste d'attente, veuillez cocher la case correspondante dans le formulaire.</span>
+		</div>
+		<br />
+	</div>
+	
 	<form (ngSubmit)="onSubmit()" #f="ngForm">
 		<!-- First name -->
 		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" mdl-register-element>
