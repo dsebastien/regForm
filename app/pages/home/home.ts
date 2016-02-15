@@ -181,9 +181,8 @@ export class Home implements AfterViewInit {
 		let retVal:boolean = false;
 
 		if(this.slots !== null && this.slots !== undefined) {
-			const percentageUsed = (this.slots.used / this.slots.total) * 100;
-			if(percentageUsed >= 90 || this.slots.remaining <= 10) {
-				retVal = true;
+			if(this.slots.remaining <= 1) {
+				retVal= true;
 			}
 		}
 
