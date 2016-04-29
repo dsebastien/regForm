@@ -48,7 +48,7 @@
     "babel-preset-es2015": "6.5.x",
     "gulp": "3.9.x",
     "jspm": "0.16.x",
-    "nodemon": "1.8.x",
+    "nodemon": "1.9.2",
     "typescript": "1.7.3",
     "modern-web-dev-build": "0.4.x",
     "jasmine-core": "2.4.x",
