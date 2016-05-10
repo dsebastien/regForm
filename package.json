@@ -49,7 +49,7 @@
     "gulp": "3.9.x",
     "jspm": "0.16.x",
     "nodemon": "1.9.2",
-    "typescript": "1.7.3",
+    "typescript": "1.8.10",
     "modern-web-dev-build": "0.4.x",
     "jasmine-core": "2.4.x",
     "karma-jasmine": "0.3.x",
