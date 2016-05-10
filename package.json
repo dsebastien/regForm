@@ -54,7 +54,7 @@
     "jasmine-core": "2.4.x",
     "karma-jasmine": "1.0.2",
     "typings": "0.x",
-    "semantic-release": "4.3.x"
+    "semantic-release": "4.3.5"
   },
   "engines": {
     "node": ">=4.3.0",
