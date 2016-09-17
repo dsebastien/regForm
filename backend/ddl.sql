@@ -11,6 +11,9 @@ CREATE TABLE `foire_vetements` (
 	`member_number` TEXT NOT NULL ,
 	`on_wait_list` BOOLEAN NOT NULL DEFAULT 0,
 	`confirmed` BOOLEAN NOT NULL DEFAULT 0 ,
+	`validated` BOOLEAN DEFAULT NULL,
+	`reminder_mail_sent` BOOLEAN DEFAULT NULL,
+	`notes` TEXT DEFAULT NULL,
 	`cancelled` BOOLEAN NOT NULL DEFAULT 0 ,
 	`created_on` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' , -- http://stackoverflow.com/questions/267658/having-both-a-created-and-last-updated-timestamp-columns-in-mysql-4-0
 	`updated_on` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
