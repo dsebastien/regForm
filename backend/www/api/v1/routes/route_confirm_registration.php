@@ -61,7 +61,7 @@ $app->get('/confirm_registration/{uuid}', function($request, $response, $args) {
 		return $response;
 	}
 	
-	// registration exists and was not yet confirmed
+	// registration exists and was not yet confirmed, looks good so far
 	
 	// OK so far so we can mark is as confirmed
 	$sql = "UPDATE `foire_vetements` SET confirmed = 1 WHERE uuid = '$escapedUuid';";
@@ -85,9 +85,9 @@ $app->get('/confirm_registration/{uuid}', function($request, $response, $args) {
 	$enoughSlotsRemaining = $remainingSlots >= $requestedSlots;
 	
 	if($enoughSlotsRemaining){
-		// update confirm: set true
 		// update wait list: set false
-		$sql = "UPDATE `foire_vetements` SET on_wait_list = 0 WHERE uuid = '$escapedUuid';";
+		// update validated: set true
+		$sql = "UPDATE `foire_vetements` SET on_wait_list = 0,validated = 1 WHERE uuid = '$escapedUuid';";
 		
 		$result = null;
 		if(!$result = $dbConnection->query($sql)){

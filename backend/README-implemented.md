@@ -210,7 +210,8 @@ When the back-end receives a registration confirmation request (confirm_registra
 * update the 'confirmed' field (set to true)
 * calculate available slots
 * if enough slots available for the user
-  * update the 'on_wait_list' field (set to false)
+  * update the 'on_wait_list' field (set to false since there's no need)
+  * update the 'validated' field (set to true since we now confirm that he's registered an his slots are reserved)
   * send registration confirmation mail
   * redirect to confirmation success page
 * if not enough slots available
