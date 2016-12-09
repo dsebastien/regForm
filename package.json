@@ -52,7 +52,7 @@
     "typescript": "1.8.10",
     "modern-web-dev-build": "0.4.x",
     "jasmine-core": "2.4.x",
-    "karma-jasmine": "1.0.2",
+    "karma-jasmine": "1.1.0",
     "typings": "0.x",
     "semantic-release": "4.3.5"
   },
