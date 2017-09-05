@@ -159,7 +159,7 @@ export class Home implements AfterViewInit {
 				}else if(regResult.registrationResultState === RegistrationResultState.SUCCEEDED) {
 					console.log("Succeeded!");
 					this.router.navigate([
-						"/RegistrationSent", {}
+						"/RegistrationConfirmation", {}
 					]);
 				}else {
 					console.log("Unknown result state: ",regResult.registrationResultState);
