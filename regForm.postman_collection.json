@@ -1,0 +1,75 @@
+{
+	"variables": [],
+	"info": {
+		"name": "regForm",
+		"_postman_id": "e654b8a3-c60b-b41b-4119-53d03b95ab4c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://www.duboishubert.be/foire_vetements_api/v2/register",
+			"request": {
+				"url": "http://www.duboishubert.be/foire_vetements_api/v2/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "*/*",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,fr;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Access-Control-Request-Headers",
+						"value": "content-type,http_x_authorization",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Access-Control-Request-Method",
+						"value": "POST",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "HTTP_X_Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJhZTdhM2I0OS02NjY2LTQ3NzUtOGQ1ZS1kNGZjZTEzNjUxZDYiLCJpc3MiOiJodHRwOlwvXC93d3cuZHVib2lzaHViZXJ0LmJlIiwiYXVkIjoiaHR0cDpcL1wvd3d3LmR1Ym9pc2h1YmVydC5iZSIsImlhdCI6MTUwNDU4NTI2MSwibmJmIjoxNTA0NTg1MjYxLCJleHAiOjE1MDQ1ODcwNjEsImNsaWVudElQQWRkcmVzcyI6IjkxLjE3Ni45My4xNzgifQ.t6VH8g0TJaGQJt8OQGil-e6ZbKC3Nilo6ZF-dqoIJtTsEsjuAohA-dv05TEaQB4htAhVdBpJ_ri8W9CsKXtS8A",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\":\"Sebastien\",\"lastName\":\"Dubois\",\"email\":\"lechtitseb@gmail.com\",\"city\":\"Jurbise\",\"phone\":\"478402993\",\"slots\":2,\"member\":false,\"memberNumber\":\"\",\"waitList\":true}"
+				},
+				"description": "Register\nOnly works when production = false, otherwise the token has to be adapted"
+			},
+			"response": []
+		}
+	]
+}
