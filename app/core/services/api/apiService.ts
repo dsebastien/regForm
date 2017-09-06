@@ -261,6 +261,8 @@ export class ApiService {
 								registrationResultState = RegistrationResultState.EMAIL_ALREADY_REGISTERED;
 							}else if(jsonResult.hasOwnProperty("not_enough_slots_available")) {
 								registrationResultState = RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE;
+							}else if(jsonResult.hasOwnProperty("not_enough_slots_available_on_wait_list")) {
+								registrationResultState = RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE_ON_WAIT_LIST;
 							}else {
 								console.log("Unknown conflict");
 								registrationResultState = RegistrationResultState.FAILED;

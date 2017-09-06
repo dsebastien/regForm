@@ -144,7 +144,7 @@ export class Home implements AfterViewInit {
 							"message": "Une erreur est survenue pendant votre inscription."
 						}
 					]);
-				}else if(regResult.registrationResultState === RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE) {
+				}else if(regResult.registrationResultState === RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE || regResult.registrationResultState === RegistrationResultState.NOT_ENOUGH_SLOTS_AVAILABLE_ON_WAIT_LIST) {
 					console.log("Not enough slots available!");
 					this.router.navigate([
 						"/RegistrationFull", {}
