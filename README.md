@@ -32,4 +32,4 @@ Next, if you have used the `--skip-install` option, then you also need to instal
 
 For more details about the build, refer to the [ModernWebDevBuild](https://github.com/dsebastien/modernWebDevBuild) project documentation.
 
-![Helped out by Jetbrains!](http://www.underconsideration.com/brandnew/archives/jetbrains_logo_detail.jpg)
+<img src="http://www.underconsideration.com/brandnew/archives/jetbrains_logo_detail.jpg" width="144px">
