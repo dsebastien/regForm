@@ -31,3 +31,5 @@ First, make sure that you have installed the required global npm packages: `npm 
 Next, if you have used the `--skip-install` option, then you also need to install the project dependencies using `npm run setup`.
 
 For more details about the build, refer to the [ModernWebDevBuild](https://github.com/dsebastien/modernWebDevBuild) project documentation.
+
+![Helped out by Jetbrains!](https://resources.jetbrains.com/storage/products/jetbrains/docs/jetbrains_logos.zip)
